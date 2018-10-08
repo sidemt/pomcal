@@ -1,0 +1,64 @@
+class PomodoroClock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      timeLeft: 1500,
+      breakLength: 5,
+      sessionLength: 25
+    };
+    this.decrementBreak = this.decrementBreak.bind(this);
+  }
+  decrementBreak() {
+    let currentLength = this.state.breakLength;
+    if (currentLength > 1) {
+      this.setState({
+        breakLength: currentLength - 1
+      })
+    }
+  }
+  
+  render(){
+    return (
+        <div>
+          <div id="break-label">Break Length</div>
+          <div id="break-length">{this.state.breakLength}</div>
+          <button id="break-decrement" onClick={this.decrementBreak}>-</button>
+          <button id="break-increment">+</button>
+
+          <div id="session-label">Session Length</div>
+          <div id="session-length">25</div>
+          <button id="session-decrement">-</button>
+          <button id="session-increment">+</button>
+
+          <TimeLeft timeLeft={this.state.timeLeft} />
+
+          <button id="start_stop">Start/Stop</button>
+          <button id="reset">Reset</button>
+        </div>
+    );
+  }
+}
+
+class TimeLeft extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    var timeLeft = this.props.timeLeft;
+    var minutes = Math.floor((timeLeft % (60 * 60)) / 60);
+    var seconds = Math.floor(timeLeft % (60));
+    function mmss(m, s) {
+      var m0 = ('00' + m).slice(-2);
+      var s0 = ('00' + s).slice(-2);
+      return m0 + ':' + s0;
+    }
+    return(
+      <div>
+        <div id="timer-label">Session</div>
+        <div id="time-left">{mmss(minutes, seconds)}</div>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<PomodoroClock />, document.getElementById('pomodoro-clock'));
