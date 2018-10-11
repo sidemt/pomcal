@@ -25,7 +25,8 @@ PomodoroClock = function (_React$Component) {_inherits(PomodoroClock, _React$Com
     _this.incrementSession = _this.incrementSession.bind(_this);
     _this.countDown = _this.countDown.bind(_this);
     _this.toggleTimer = _this.toggleTimer.bind(_this);
-    _this.startStop = _this.startStop.bind(_this);return _this;
+    _this.startStop = _this.startStop.bind(_this);
+    _this.updateTimeLeft = _this.updateTimeLeft.bind(_this);return _this;
   }_createClass(PomodoroClock, [{ key: 'reset', value: function reset()
 
     {
@@ -42,54 +43,48 @@ PomodoroClock = function (_React$Component) {_inherits(PomodoroClock, _React$Com
     } }, { key: 'decrementBreak', value: function decrementBreak()
 
     {
-      var currentLength = this.state.breakLength;
-      var newLength = currentLength - 1;
-      if (newLength > 0) {
-        this.setState({
-          breakLength: newLength });
+      if (this.state.breakLength > 1) {
+        this.setState(function (state) {return {
+            breakLength: state.breakLength - 1 };});
 
+        this.updateTimeLeft(BREAK);
       }
     } }, { key: 'incrementBreak', value: function incrementBreak()
 
     {
-      var currentLength = this.state.breakLength;
-      var newLength = currentLength + 1;
-      if (newLength <= 60) {
-        this.setState({
-          breakLength: newLength });
+      if (this.state.breakLength < 60) {
+        this.setState(function (state) {return {
+            breakLength: state.breakLength + 1 };});
 
+        this.updateTimeLeft(BREAK);
       }
     } }, { key: 'decrementSession', value: function decrementSession()
 
     {
-      var currentLength = this.state.sessionLength;
-      var newLength = currentLength - 1;
-      if (newLength > 0) {
-        this.setState({
-          sessionLength: newLength,
-          timeLeft: newLength * 60 });
+      if (this.state.sessionLength > 1) {
+        this.setState(function (state) {return {
+            sessionLength: state.sessionLength - 1 };});
 
+        this.updateTimeLeft(SESSION);
       }
     } }, { key: 'incrementSession', value: function incrementSession()
 
     {
       var currentLength = this.state.sessionLength;
       var newLength = currentLength + 1;
-      if (newLength <= 60) {
-        this.setState({
-          sessionLength: newLength,
-          timeLeft: newLength * 60 });
+      if (this.state.sessionLength < 60) {
+        this.setState(function (state) {return {
+            sessionLength: state.sessionLength + 1 };});
 
+        this.updateTimeLeft(SESSION);
       }
     } }, { key: 'countDown', value: function countDown()
 
     {
-      var timeLeft = this.state.timeLeft;
-      console.log(timeLeft);
-      var newTimeLeft = timeLeft - 1;
-      if (newTimeLeft >= 0) {
-        this.setState({
-          timeLeft: newTimeLeft });
+      console.log(this.state.timeLeft);
+      if (this.state.timeLeft > 0) {
+        this.setState(function (state) {return {
+            timeLeft: state.timeLeft - 1 };});
 
       } else {
         this.toggleTimer();
@@ -119,28 +114,54 @@ PomodoroClock = function (_React$Component) {_inherits(PomodoroClock, _React$Com
         isRunning = false;
         clearInterval(intervalId);
       }
+    } }, { key: 'updateTimeLeft', value: function updateTimeLeft(
+
+    label) {
+      if (label == SESSION && this.state.timerLabel == SESSION) {
+        this.setState(function (state) {return {
+            timeLeft: state.sessionLength * 60 };});
+
+      } else if (label == BREAK && this.state.timerLabel == BREAK) {
+        this.setState(function (state) {return {
+            timeLeft: state.breakLength * 60 };});
+
+      } else {
+        return;
+      }
     } }, { key: 'render', value: function render()
 
     {
       return (
-        React.createElement('div', null,
-          React.createElement('div', { id: 'break-label' }, 'Break Length'),
-          React.createElement('div', { id: 'break-length' }, this.state.breakLength),
-          React.createElement('button', { id: 'break-decrement', onClick: this.decrementBreak }, '-'),
-          React.createElement('button', { id: 'break-increment', onClick: this.incrementBreak }, '+'),
-
-          React.createElement('div', { id: 'session-label' }, 'Session Length'),
-          React.createElement('div', { id: 'session-length' }, this.state.sessionLength),
-          React.createElement('button', { id: 'session-decrement', onClick: this.decrementSession }, '-'),
-          React.createElement('button', { id: 'session-increment', onClick: this.incrementSession }, '+'),
-
-          React.createElement('div', null,
-            React.createElement('div', { id: 'timer-label' }, this.state.timerLabel),
-            React.createElement(TimeLeft, { timeLeft: this.state.timeLeft })),
+        React.createElement('div', { id: 'pomodoro-clock-inside' },
+          React.createElement('div', { className: 'btn-set' },
+            React.createElement('div', null,
+              React.createElement('div', { id: 'timer-label' }, this.state.timerLabel),
+              React.createElement(TimeLeft, { timeLeft: this.state.timeLeft })),
 
 
-          React.createElement('button', { id: 'start_stop', onClick: this.startStop }, 'Start/Stop'),
-          React.createElement('button', { id: 'reset', onClick: this.reset }, 'Reset')));
+            React.createElement('div', null,
+              React.createElement('button', { id: 'start_stop', className: 'btn btn-light', onClick: this.startStop }, 'Start/Stop'),
+              React.createElement('button', { id: 'reset', className: 'btn btn-light', onClick: this.reset }, 'Reset'))),
+
+
+
+          React.createElement('div', { className: 'btn-set' },
+            React.createElement('div', { id: 'break-label' }, 'Break Length'),
+            React.createElement('div', { id: 'break-length' }, this.state.breakLength),
+            React.createElement('div', null,
+              React.createElement('button', { id: 'break-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementBreak }, '-'),
+              React.createElement('button', { id: 'break-increment', className: 'btn btn-light fixed-width', onClick: this.incrementBreak }, '+'))),
+
+
+
+          React.createElement('div', { className: 'btn-set' },
+            React.createElement('div', { id: 'session-label' }, 'Session Length'),
+            React.createElement('div', { id: 'session-length' }, this.state.sessionLength),
+            React.createElement('div', null,
+              React.createElement('button', { id: 'session-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementSession }, '-'),
+              React.createElement('button', { id: 'session-increment', className: 'btn btn-light fixed-width', onClick: this.incrementSession }, '+')))));
+
+
 
 
     } }]);return PomodoroClock;}(React.Component);var
