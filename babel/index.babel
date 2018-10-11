@@ -1,12 +1,20 @@
 // Variable to store the intervalID of setInterval
 // Used to stop the setInterval function by clearInterval
 var intervalId;
+// Variable to store the state of if the timer is running
+var isRunning = false;
+
+const BREAK = 'Break';
+const SESSION = 'Session';
+
+const beep = document.getElementById('beep'); 
 
 class PomodoroClock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeLeft: 5,
+      timerLabel: SESSION,
+      timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25
     };
@@ -16,15 +24,21 @@ class PomodoroClock extends React.Component {
     this.decrementSession = this.decrementSession.bind(this);
     this.incrementSession = this.incrementSession.bind(this);
     this.countDown = this.countDown.bind(this);
-    this.startCountDown = this.startCountDown.bind(this);
+    this.toggleTimer = this.toggleTimer.bind(this);
+    this.startStop = this.startStop.bind(this);
   }
   
   reset() {
     this.setState({
+      timerLabel: SESSION,
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25
     })
+    isRunning = false;
+    clearInterval(intervalId);
+    beep.pause();
+    beep.currentTime = 0;
   }
   
   decrementBreak() {
@@ -52,7 +66,8 @@ class PomodoroClock extends React.Component {
     let newLength = currentLength - 1;
     if (newLength > 0) {
       this.setState({
-        sessionLength: newLength
+        sessionLength: newLength,
+        timeLeft: newLength * 60
       })
     }
   }
@@ -62,7 +77,8 @@ class PomodoroClock extends React.Component {
     let newLength = currentLength + 1;
     if (newLength <= 60) {
       this.setState({
-        sessionLength: newLength
+        sessionLength: newLength,
+        timeLeft: newLength * 60
       })
     }
   }
@@ -71,37 +87,61 @@ class PomodoroClock extends React.Component {
       let timeLeft = this.state.timeLeft;
       console.log(timeLeft);
       let newTimeLeft = timeLeft - 1;
-      this.setState({
-        timeLeft: newTimeLeft
-      })
-      console.log("here");
-      if (this.state.timeLeft <= 0) {
-        clearInterval(intervalId);
+      if (newTimeLeft >= 0) {
+        this.setState({
+          timeLeft: newTimeLeft
+        })
+      } else {
+        this.toggleTimer();
+        beep.play();
       }
     }
   
-  startCountDown() {
-    intervalId = setInterval(this.countDown, 1000);
+  toggleTimer() {
+    if (this.state.timerLabel == SESSION) {
+      this.setState({
+        timerLabel: BREAK,
+        timeLeft: this.state.breakLength * 60
+      })
+    } else {
+      this.setState({
+        timerLabel: SESSION,
+        timeLeft: this.state.sessionLength * 60
+      })
+    }
+  }
+  
+  startStop() {
+    if (!isRunning) {
+      isRunning = true;
+      intervalId = setInterval(this.countDown, 1000);
+    } else {
+      isRunning = false;
+      clearInterval(intervalId);
+    }
   }
   
   render(){
     return (
+      <div>
+        <div id="break-label">Break Length</div>
+        <div id="break-length">{this.state.breakLength}</div>
+        <button id="break-decrement" onClick={this.decrementBreak}>-</button>
+        <button id="break-increment" onClick={this.incrementBreak}>+</button>
+
+        <div id="session-label">Session Length</div>
+        <div id="session-length">{this.state.sessionLength}</div>
+        <button id="session-decrement" onClick={this.decrementSession}>-</button>
+        <button id="session-increment" onClick={this.incrementSession}>+</button>
+
         <div>
-          <div id="break-label">Break Length</div>
-          <div id="break-length">{this.state.breakLength}</div>
-          <button id="break-decrement" onClick={this.decrementBreak}>-</button>
-          <button id="break-increment" onClick={this.incrementBreak}>+</button>
-
-          <div id="session-label">Session Length</div>
-          <div id="session-length">{this.state.sessionLength}</div>
-          <button id="session-decrement" onClick={this.decrementSession}>-</button>
-          <button id="session-increment" onClick={this.incrementSession}>+</button>
-
+          <div id="timer-label">{this.state.timerLabel}</div>
           <TimeLeft timeLeft={this.state.timeLeft} />
-
-          <button id="start_stop" onClick={this.startCountDown}>Start/Stop</button>
-          <button id="reset" onClick={this.reset}>Reset</button>
         </div>
+
+        <button id="start_stop" onClick={this.startStop}>Start/Stop</button>
+        <button id="reset" onClick={this.reset}>Reset</button>
+      </div>
     );
   }
 }
@@ -120,10 +160,7 @@ class TimeLeft extends React.Component {
       return m0 + ':' + s0;
     }
     return(
-      <div>
-        <div id="timer-label">Session</div>
         <div id="time-left">{mmss(minutes, seconds)}</div>
-      </div>
     );
   }
 }
