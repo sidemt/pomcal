@@ -1,19 +1,48 @@
+html,
 body {
-  --main-red: #EF6461;
-  --main-green: #63A375;
-  --main-white: #FFFFFA;
+  height: 100%;
 }
 
-.body {
+body {
+  --main-red: #ef6461;
+  --main-green: #63a375;
+  --main-white: #fffffa;
+  --main-black: #333333;
+}
+
+#body {
   background-color: var(--main-red);
   text-align: center;
+
+  align-items: center;
+  color: var(--main-black);
+  display: flex;
+  font-family: "Comfortaa", cursive;
+  justify-content: center;
 }
 
 #pomodoro-clock-inside {
   align-items: center;
-  display: flex;
-  flex-direction: row;
+  display: grid;
   justify-content: center;
+}
+
+#pomodoro-clock-inside .timer {
+  grid-column: 1;
+  grid-row: 1;
+  width: 15rem;
+}
+
+#pomodoro-clock-inside .session-length {
+  grid-column: 2;
+  grid-row: 1;
+  width: 12rem;
+}
+
+#pomodoro-clock-inside .break-length {
+  grid-column: 3;
+  grid-row: 1;
+  width: 12rem;
 }
 
 #pomodoro-clock-inside .btn {
@@ -29,4 +58,37 @@ body {
   margin: 0.5rem;
   border: 1px solid var(--main-white);
   border-radius: 5px;
+}
+
+#pomodoro-clock-inside .label {
+  font-size: 1.1rem;
+}
+
+#pomodoro-clock-inside .time {
+  font-size: 1.2rem;
+  line-height: 3.5rem;
+}
+
+#pomodoro-clock-inside .timer .time {
+  font-size: 2rem;
+}
+
+@media (max-width: 767.98px) {
+  #pomodoro-clock-inside .timer {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    width: auto;
+  }
+
+  #pomodoro-clock-inside .session-length {
+    grid-column: 1;
+    grid-row: 2;
+    width: auto;
+  }
+
+  #pomodoro-clock-inside .break-length {
+    grid-column: 2;
+    grid-row: 2;
+    width: auto;
+  }
 }
