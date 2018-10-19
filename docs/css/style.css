@@ -10,6 +10,12 @@ body {
   --main-black: #333333;
 }
 
+#body a,
+a:focus,
+a:hover {
+  color: var(--main-white);
+}
+
 #body {
   background-color: var(--main-red);
   text-align: center;
@@ -71,6 +77,10 @@ body {
 
 #pomodoro-clock-inside .timer .time {
   font-size: 2rem;
+}
+
+footer {
+  margin: 1rem 0;
 }
 
 @media (max-width: 767.98px) {

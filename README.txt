@@ -1,3 +1,2 @@
-A Pen created at CodePen.io. You can find this one at https://codepen.io/sidemt/pen/LgxNay.
-
- 
+# pomodoro-clock
+Visit [https://sidemt.github.io/pomodoro-clock/](https://sidemt.github.io/pomodoro-clock/) to view the page
