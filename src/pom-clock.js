@@ -7,6 +7,19 @@ const SESSION = 'Session';
 
 const beep = document.getElementById('beep'); 
 
+function mmss(m, s) {
+  var m0 = ('00' + m).slice(-2);
+  var s0 = ('00' + s).slice(-2);
+  return m0 + ':' + s0;
+}
+
+function calcTimeLeft(timeLeft) {
+  var minutes = Math.floor((timeLeft % (60 * 60)) / 60);
+  var seconds = Math.floor(timeLeft % (60));
+
+  return mmss(minutes, seconds);
+}
+
 class PomodoroClock extends React.Component {
   constructor(props) {
     super(props);
@@ -93,6 +106,8 @@ class PomodoroClock extends React.Component {
   
   toggleTimer() {
     if (this.state.timerLabel == SESSION) {
+      // Create Calendar event
+      document.getElementById('create_button').click();
       this.setState({
         timerLabel: BREAK,
         timeLeft: this.state.breakLength * 60
@@ -136,6 +151,7 @@ class PomodoroClock extends React.Component {
   }
   
   render(){
+    document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
     return (
       <div id="pomodoro-clock-inside">
         <div className="btn-set timer">
@@ -179,17 +195,11 @@ class TimeLeft extends React.Component {
   }
   render() {
     var timeLeft = this.props.timeLeft;
-    var minutes = Math.floor((timeLeft % (60 * 60)) / 60);
-    var seconds = Math.floor(timeLeft % (60));
-    function mmss(m, s) {
-      var m0 = ('00' + m).slice(-2);
-      var s0 = ('00' + s).slice(-2);
-      return m0 + ':' + s0;
-    }
     return(
-        <div id="time-left" className="time">{mmss(minutes, seconds)}</div>
+        <div id="time-left" className="time">{calcTimeLeft(timeLeft)}</div>
     );
   }
 }
 
 ReactDOM.render(<PomodoroClock />, document.getElementById('pomodoro-clock'));
+

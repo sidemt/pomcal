@@ -15,6 +15,19 @@ var SESSION = 'Session';
 
 var beep = document.getElementById('beep');
 
+function mmss(m, s) {
+  var m0 = ('00' + m).slice(-2);
+  var s0 = ('00' + s).slice(-2);
+  return m0 + ':' + s0;
+}
+
+function calcTimeLeft(timeLeft) {
+  var minutes = Math.floor(timeLeft % (60 * 60) / 60);
+  var seconds = Math.floor(timeLeft % 60);
+
+  return mmss(minutes, seconds);
+}
+
 var PomodoroClock = function (_React$Component) {
   _inherits(PomodoroClock, _React$Component);
 
@@ -125,6 +138,8 @@ var PomodoroClock = function (_React$Component) {
     key: 'toggleTimer',
     value: function toggleTimer() {
       if (this.state.timerLabel == SESSION) {
+        // Create Calendar event
+        document.getElementById('create_button').click();
         this.setState({
           timerLabel: BREAK,
           timeLeft: this.state.breakLength * 60
@@ -175,6 +190,7 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
       return React.createElement(
         'div',
         { id: 'pomodoro-clock-inside' },
@@ -282,17 +298,10 @@ var TimeLeft = function (_React$Component2) {
     key: 'render',
     value: function render() {
       var timeLeft = this.props.timeLeft;
-      var minutes = Math.floor(timeLeft % (60 * 60) / 60);
-      var seconds = Math.floor(timeLeft % 60);
-      function mmss(m, s) {
-        var m0 = ('00' + m).slice(-2);
-        var s0 = ('00' + s).slice(-2);
-        return m0 + ':' + s0;
-      }
       return React.createElement(
         'div',
         { id: 'time-left', className: 'time' },
-        mmss(minutes, seconds)
+        calcTimeLeft(timeLeft)
       );
     }
   }]);
