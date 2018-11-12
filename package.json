@@ -1,0 +1,27 @@
+{
+  "name": "pomcal",
+  "version": "1.0.0",
+  "description": "Visit [https://sidemt.github.io/pomodoro-clock/](https://sidemt.github.io/pomodoro-clock/) to view the page",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidemt/pomcal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sidemt/pomcal/issues"
+  },
+  "homepage": "https://github.com/sidemt/pomcal#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2"
+  }
+}
