@@ -95,6 +95,7 @@ a:hover {
 .number-list {
   list-style-position: inside;
   margin: 1rem;
+  padding-inline-start: 0;
 }
 
 .btn {
