@@ -86,12 +86,12 @@ function appendPre(message) {
 function listUpcomingEvents() {
   gapi.client.calendar.events.list({
     'calendarId': 'primary',
-    'timeMin': new Date().toISOString(),
+    'timeMin': (new Date()).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
     'maxResults': 10,
     'orderBy': 'startTime'
-  }).then(function (response) {
+  }).then(function(response) {
     var events = response.result.items;
     appendPre('Upcoming events:');
 
@@ -102,7 +102,7 @@ function listUpcomingEvents() {
         if (!when) {
           when = event.start.date;
         }
-        appendPre(event.summary + ' (' + when + ')');
+        appendPre(event.summary + ' (' + when + ')')
       }
     } else {
       appendPre('No upcoming events found.');
@@ -114,22 +114,28 @@ function listUpcomingEvents() {
  * Convert JavaScript Date object into RFC 3339 format
  */
 function rfc3339(d) {
-
+  
   function pad(n) {
-    return n < 10 ? "0" + n : n;
+      return n < 10 ? "0" + n : n;
   }
 
   function timezoneOffset(offset) {
-    var sign;
-    if (offset === 0) {
-      return "Z";
-    }
-    sign = offset > 0 ? "-" : "+";
-    offset = Math.abs(offset);
-    return sign + pad(Math.floor(offset / 60)) + ":" + pad(offset % 60);
+      var sign;
+      if (offset === 0) {
+          return "Z";
+      }
+      sign = (offset > 0) ? "-" : "+";
+      offset = Math.abs(offset);
+      return sign + pad(Math.floor(offset / 60)) + ":" + pad(offset % 60);
   }
 
-  return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds()) + timezoneOffset(d.getTimezoneOffset());
+  return d.getFullYear() + "-" +
+      pad(d.getMonth() + 1) + "-" +
+      pad(d.getDate()) + "T" +
+      pad(d.getHours()) + ":" +
+      pad(d.getMinutes()) + ":" +
+      pad(d.getSeconds()) + 
+      timezoneOffset(d.getTimezoneOffset());
 }
 
 /**
@@ -154,7 +160,7 @@ function createEvent(duration) {
     'end': {
       'dateTime': endTime,
       'timeZone': 'Asia/Tokyo'
-    }
+    },
   };
 
   var request = gapi.client.calendar.events.insert({
@@ -162,7 +168,8 @@ function createEvent(duration) {
     'resource': event
   });
 
-  request.execute(function (event) {
+  request.execute(function(event) {
     appendPre('Event created: ' + event.htmlLink);
   });
+
 }

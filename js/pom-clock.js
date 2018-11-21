@@ -1,5 +1,3 @@
-"use strict";
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7,8 +5,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-import calendar from "calendar.js";
 
 // Variable to store the intervalID of setInterval
 // Used to stop the setInterval function by clearInterval
@@ -63,7 +59,7 @@ var PomodoroClock = function (_React$Component) {
   }
 
   _createClass(PomodoroClock, [{
-    key: "reset",
+    key: 'reset',
     value: function reset() {
       this.setState({
         timerLabel: SESSION,
@@ -79,7 +75,7 @@ var PomodoroClock = function (_React$Component) {
       document.getElementById('body').style.backgroundColor = "var(--main-red)";
     }
   }, {
-    key: "decrementBreak",
+    key: 'decrementBreak',
     value: function decrementBreak() {
       if (this.state.breakLength > 1) {
         this.setState(function (state) {
@@ -91,7 +87,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "incrementBreak",
+    key: 'incrementBreak',
     value: function incrementBreak() {
       if (this.state.breakLength < 60) {
         this.setState(function (state) {
@@ -103,7 +99,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "decrementSession",
+    key: 'decrementSession',
     value: function decrementSession() {
       if (this.state.sessionLength > 1) {
         this.setState(function (state) {
@@ -115,7 +111,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "incrementSession",
+    key: 'incrementSession',
     value: function incrementSession() {
       var currentLength = this.state.sessionLength;
       var newLength = currentLength + 1;
@@ -129,7 +125,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "countDown",
+    key: 'countDown',
     value: function countDown() {
       if (this.state.timeLeft > 0) {
         this.setState(function (state) {
@@ -143,11 +139,11 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "toggleTimer",
+    key: 'toggleTimer',
     value: function toggleTimer() {
       if (this.state.timerLabel == SESSION) {
         // Insert event to calendar
-        calendar.createEvent(this.state.sessionLength);
+        createEvent(this.state.sessionLength);
         // document.getElementById('create_button').click();
         this.setState({
           timerLabel: BREAK,
@@ -165,7 +161,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "startStop",
+    key: 'startStop',
     value: function startStop() {
       if (!this.state.isRunning) {
         // Start the timer
@@ -183,7 +179,7 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "updateTimeLeft",
+    key: 'updateTimeLeft',
     value: function updateTimeLeft(label) {
       if (label == SESSION && this.state.timerLabel == SESSION) {
         this.setState(function (state) {
@@ -202,93 +198,93 @@ var PomodoroClock = function (_React$Component) {
       }
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
       return React.createElement(
-        "div",
-        { id: "pomodoro-clock-inside" },
+        'div',
+        { id: 'pomodoro-clock-inside' },
         React.createElement(
-          "div",
-          { className: "btn-set timer" },
+          'div',
+          { className: 'btn-set timer' },
           React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-              "div",
-              { id: "timer-label", className: "label" },
+              'div',
+              { id: 'timer-label', className: 'label' },
               this.state.timerLabel
             ),
             React.createElement(TimeLeft, { timeLeft: this.state.timeLeft })
           ),
           React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-              "button",
-              { id: "start_stop", className: "btn btn-light", onClick: this.startStop },
-              "Start/Stop"
+              'button',
+              { id: 'start_stop', className: 'btn btn-light', onClick: this.startStop },
+              'Start/Stop'
             ),
             React.createElement(
-              "button",
-              { id: "reset", className: "btn btn-light", onClick: this.reset },
-              "Reset"
+              'button',
+              { id: 'reset', className: 'btn btn-light', onClick: this.reset },
+              'Reset'
             )
           )
         ),
         React.createElement(
-          "div",
-          { className: "btn-set session-length" },
+          'div',
+          { className: 'btn-set session-length' },
           React.createElement(
-            "div",
-            { id: "session-label", className: "label" },
-            "Session Length"
+            'div',
+            { id: 'session-label', className: 'label' },
+            'Session Length'
           ),
           React.createElement(
-            "div",
-            { id: "session-length", className: "time" },
+            'div',
+            { id: 'session-length', className: 'time' },
             this.state.sessionLength
           ),
           React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-              "button",
-              { id: "session-decrement", className: "btn btn-light fixed-width", onClick: this.decrementSession },
-              "-"
+              'button',
+              { id: 'session-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementSession },
+              '-'
             ),
             React.createElement(
-              "button",
-              { id: "session-increment", className: "btn btn-light fixed-width", onClick: this.incrementSession },
-              "+"
+              'button',
+              { id: 'session-increment', className: 'btn btn-light fixed-width', onClick: this.incrementSession },
+              '+'
             )
           )
         ),
         React.createElement(
-          "div",
-          { className: "btn-set break-length" },
+          'div',
+          { className: 'btn-set break-length' },
           React.createElement(
-            "div",
-            { id: "break-label", className: "label" },
-            "Break Length"
+            'div',
+            { id: 'break-label', className: 'label' },
+            'Break Length'
           ),
           React.createElement(
-            "div",
-            { id: "break-length", className: "time" },
+            'div',
+            { id: 'break-length', className: 'time' },
             this.state.breakLength
           ),
           React.createElement(
-            "div",
+            'div',
             null,
             React.createElement(
-              "button",
-              { id: "break-decrement", className: "btn btn-light fixed-width", onClick: this.decrementBreak },
-              "-"
+              'button',
+              { id: 'break-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementBreak },
+              '-'
             ),
             React.createElement(
-              "button",
-              { id: "break-increment", className: "btn btn-light fixed-width", onClick: this.incrementBreak },
-              "+"
+              'button',
+              { id: 'break-increment', className: 'btn btn-light fixed-width', onClick: this.incrementBreak },
+              '+'
             )
           )
         )
@@ -309,12 +305,12 @@ var TimeLeft = function (_React$Component2) {
   }
 
   _createClass(TimeLeft, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       var timeLeft = this.props.timeLeft;
       return React.createElement(
-        "div",
-        { id: "time-left", className: "time" },
+        'div',
+        { id: 'time-left', className: 'time' },
         calcTimeLeft(timeLeft)
       );
     }

@@ -1,6 +1,3 @@
-"use strict";
-import calendar from "calendar.js";
-
 // Variable to store the intervalID of setInterval
 // Used to stop the setInterval function by clearInterval
 var intervalId;
@@ -115,7 +112,7 @@ class PomodoroClock extends React.Component {
   toggleTimer() {
     if (this.state.timerLabel == SESSION) {
       // Insert event to calendar
-      calendar.createEvent(this.state.sessionLength);
+      createEvent(this.state.sessionLength);
       // document.getElementById('create_button').click();
       this.setState({
         timerLabel: BREAK,
