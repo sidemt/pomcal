@@ -37,18 +37,23 @@
     </footer>
   </div>
 
+  <audio id="sound-session" preload="auto">
+    <source src="assets/small-bell01.mp3">
+  </audio>
+  <audio id="sound-break" preload="auto">
+    <source src="assets/se_maoudamashii_chime06.mp3">
+  </audio>
+
+  <!-- Connect to Google Calendar -->
   <script async defer src="https://apis.google.com/js/api.js"
     onload="this.onload=function(){};handleClientLoad()"
     onreadystatechange="if (this.readyState === 'complete') this.onload()">
   </script>
   <script type="text/javascript" src="js/keys.js"></script>
   <script type="text/javascript" src="js/calendar.js"></script>
-
-  <audio id="beep">
-    <source src="https://res.cloudinary.com/cd0hgkqgk/video/upload/v1539035604/audio/one35.mp3">
-  </audio>
-  <script src='https://unpkg.com/react@16/umd/react.development.js'></script>
-  <script src='https://unpkg.com/react-dom@16/umd/react-dom.development.js'></script>
+  <!-- Load pomodoro timer -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script  src="js/pom-clock.js"></script>
 </body>
 

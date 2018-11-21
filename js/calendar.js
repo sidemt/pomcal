@@ -34,7 +34,6 @@ function initClient() {
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
-    createButton.onclick = handleCreateClick;
   });
 }
 
@@ -142,11 +141,11 @@ function rfc3339(d) {
 /**
  * Add and event to the calendar when create button is clicked
  */
-function handleCreateClick() {
+function createEvent(duration) {
 
   var startTime = new Date();
   var endTime = new Date();
-  startTime.setMinutes(startTime.getMinutes() - 25);
+  startTime.setMinutes(startTime.getMinutes() - duration);
   // end.setMinutes(end.getMinutes() + 25);
   startTime = rfc3339(startTime);
   endTime = rfc3339(endTime);
