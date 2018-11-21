@@ -13,7 +13,10 @@ var intervalId;
 var BREAK = 'Break';
 var SESSION = 'Session';
 
-var beep = document.getElementById('beep');
+var SOUND_SESSION = document.getElementById('sound-session');
+var SOUND_BREAK = document.getElementById('sound-break');
+
+var beep = SOUND_SESSION;
 
 function mmss(m, s) {
   var m0 = ('00' + m).slice(-2);
@@ -68,6 +71,7 @@ var PomodoroClock = function (_React$Component) {
       clearInterval(intervalId);
       beep.pause();
       beep.currentTime = 0;
+      beep = SOUND_SESSION;
       document.getElementById('body').style.backgroundColor = "var(--main-red)";
     }
   }, {
@@ -138,30 +142,36 @@ var PomodoroClock = function (_React$Component) {
     key: 'toggleTimer',
     value: function toggleTimer() {
       if (this.state.timerLabel == SESSION) {
-        // Create Calendar event
-        document.getElementById('create_button').click();
+        // Insert event to calendar
+        createEvent(this.state.sessionLength);
+        // document.getElementById('create_button').click();
         this.setState({
           timerLabel: BREAK,
           timeLeft: this.state.breakLength * 60
         });
         document.getElementById('body').style.backgroundColor = "var(--main-green)";
+        beep = SOUND_BREAK;
       } else {
         this.setState({
           timerLabel: SESSION,
           timeLeft: this.state.sessionLength * 60
         });
         document.getElementById('body').style.backgroundColor = "var(--main-red)";
+        beep = SOUND_SESSION;
       }
     }
   }, {
     key: 'startStop',
     value: function startStop() {
       if (!this.state.isRunning) {
+        // Start the timer
         this.setState({
           isRunning: true
         });
         intervalId = setInterval(this.countDown, 1000);
+        beep.play();
       } else {
+        // Stop the timer
         this.setState({
           isRunning: false
         });
@@ -190,7 +200,7 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
+      document.title = calcTimeLeft(this.state.timeLeft) + " [" + this.state.timerLabel + "] - Pom-Cal";
       return React.createElement(
         'div',
         { id: 'pomodoro-clock-inside' },

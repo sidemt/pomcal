@@ -1,7 +1,7 @@
 {
   "name": "pomcal",
   "version": "1.0.0",
-  "description": "Visit [https://sidemt.github.io/pomodoro-clock/](https://sidemt.github.io/pomodoro-clock/) to view the page",
+  "description": "Visit [https://toolsiwant.net/pom-cal/](https://toolsiwant.net/pom-cal/) to view the page",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -15,7 +15,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sidemt/pomcal/issues"
   },

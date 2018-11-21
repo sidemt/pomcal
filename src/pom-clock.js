@@ -5,7 +5,11 @@ var intervalId;
 const BREAK = 'Break';
 const SESSION = 'Session';
 
-const beep = document.getElementById('beep'); 
+const SOUND_SESSION = document.getElementById('sound-session');
+const SOUND_BREAK = document.getElementById('sound-break');
+
+var beep = SOUND_SESSION;
+
 
 function mmss(m, s) {
   var m0 = ('00' + m).slice(-2);
@@ -52,6 +56,7 @@ class PomodoroClock extends React.Component {
     clearInterval(intervalId);
     beep.pause();
     beep.currentTime = 0;
+    beep = SOUND_SESSION;
     document.getElementById('body').style.backgroundColor = "var(--main-red)";
   }
   
@@ -106,29 +111,35 @@ class PomodoroClock extends React.Component {
   
   toggleTimer() {
     if (this.state.timerLabel == SESSION) {
-      // Create Calendar event
-      document.getElementById('create_button').click();
+      // Insert event to calendar
+      createEvent(this.state.sessionLength);
+      // document.getElementById('create_button').click();
       this.setState({
         timerLabel: BREAK,
         timeLeft: this.state.breakLength * 60
       })
       document.getElementById('body').style.backgroundColor = "var(--main-green)";
+      beep = SOUND_BREAK;
     } else {
       this.setState({
         timerLabel: SESSION,
         timeLeft: this.state.sessionLength * 60
       })
       document.getElementById('body').style.backgroundColor = "var(--main-red)";
+      beep = SOUND_SESSION;
     }
   }
   
   startStop() {
     if (!this.state.isRunning) {
+      // Start the timer
       this.setState({
         isRunning: true
       })
       intervalId = setInterval(this.countDown, 1000);
+      beep.play();
     } else {
+      // Stop the timer
       this.setState({
         isRunning: false
       })
@@ -151,7 +162,7 @@ class PomodoroClock extends React.Component {
   }
   
   render(){
-    document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
+    document.title = calcTimeLeft(this.state.timeLeft) + " [" + this.state.timerLabel + "] - Pom-Cal";
     return (
       <div id="pomodoro-clock-inside">
         <div className="btn-set timer">
