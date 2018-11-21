@@ -79,6 +79,14 @@ a:hover {
   font-size: 2rem;
 }
 
+.descriptions {
+  background-color: rgba(255, 255, 250, 0.3);
+  border: 1px solid var(--main-white);
+  border-radius: 5px;
+  max-width: 41rem;
+  margin: auto;
+}
+
 .section {
   margin: 1.5rem;
 }

@@ -25,43 +25,48 @@
 
     <ol id="event-list" class="number-list"></ol>
 
-    <div class="section">
-      <p id="authorize_desc" style="display: none;">
-        Sign in with Google to log your work on Google Calendar<br>
-        <small>Googleカレンダーにログを記録するにはサインインしてください。</small>
-      </p>
-      <!--Add buttons to initiate auth sequence and sign out-->
-      <button id="authorize_button" class="btn btn-light" style="display: none;">Sign In</button>
-      <button id="signout_button" class="btn btn-secondary" style="display: none;">Sign Out</button>
+    <div class="descriptions">
+      <div class="section">
+        <p id="authorize_desc" style="display: none;">
+          Sign in with Google to log your work on Google Calendar<br>
+          <small>Googleカレンダーにログを記録するにはサインインしてください。</small>
+        </p>
+        <!--Add buttons to initiate auth sequence and sign out-->
+        <button id="authorize_button" class="btn btn-light" style="display: none;">Sign In</button>
+        <button id="signout_button" class="btn btn-secondary" style="display: none;">Sign Out</button>
+      </div>
+  
+      <div class="section">
+        <p>
+          When a session is completed, a log will be automatically added to your calendar.<br>
+          Currently, the log can be added to your primary (default) calendar only.<br>
+          <small>
+            セッション終了時に自動的にカレンダーにログを追加します。<br>
+            現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
+          </small>
+        </p>
+      </div>
+  
+      <div id="signed-in-only" class="section" style="display: none;">
+        <p>
+          You can manually add a log by clicking the button below.<br>
+          <small>
+            こちらのボタンでログを手動で追加できます。
+          </small>
+        </p>
+        <button id="create_button" class="btn btn-light">Add a Log</button>
+      </div>
+  
+      <!-- <pre id="content"></pre> -->
     </div>
+
 
     <div class="section">
       <p>
-        When a session is completed, a log will be automatically added to your calendar.<br>
-        Currently, the log can be added to your primary (default) calendar only.<br>
-        <small>
-          セッション終了時に自動的にカレンダーにログを追加します。<br>
-          現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
-        </small>
+        Pom-Cal is still under development. Sorry for any inconvenience.<br>
+        Developed by <a href="https://twitter.com/siideemt" target="_blank">@siideemt</a><br>
       </p>
     </div>
-
-    <div id="signed-in-only" class="section" style="display: none;">
-      <p>
-        You can manually add a log by clicking the button below.<br>
-        <small>
-          こちらのボタンでログを手動で追加できます。
-        </small>
-      </p>
-      <button id="create_button" class="btn btn-light">Add a Log</button>
-    </div>
-
-    <!-- <pre id="content"></pre> -->
-
-    <p>
-      Pom-Cal is still under development. Sorry for any inconvenience.<br>
-      Developed by <a href="https://twitter.com/siideemt" target="_blank">@siideemt</a><br>
-    </p>
 
     <footer class="footer">
       <ul class="justify-content-center">
