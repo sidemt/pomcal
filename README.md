@@ -1,2 +1,2 @@
 # pomodoro-clock
-Visit [https://sidemt.github.io/pomodoro-clock/](https://sidemt.github.io/pomodoro-clock/) to view the page
+Visit [https://toolsiwant.net/pom-cal/](https://toolsiwant.net/pom-cal/) to view the page
