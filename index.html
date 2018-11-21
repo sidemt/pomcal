@@ -14,32 +14,73 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <title>PomCal</title>
+  <title>Pom-Cal - Pomodoro timer integrated with Google Calendar</title>
 </head>
 
 <body id="body">
   <div class="container">
-    <h1>Pomodoro Clock</h1>
+    <h1>Pom-Cal</h1>
+    <p>Pomodoro timer integrated with Google Calendar</p>
     <div id="pomodoro-clock"></div>
 
+    <ol id="event-list" class="number-list"></ol>
 
-    <div>
-      <p>Sign in to Google to log your work on Google Calendar</p>
-
+    <div class="section">
+      <p id="authorize_desc" style="display: none;">
+        Sign in with Google to log your work on Google Calendar<br>
+        <small>Googleカレンダーにログを記録するにはサインインしてください。</small>
+      </p>
       <!--Add buttons to initiate auth sequence and sign out-->
-      <button id="authorize_button" style="display: none;">Sign In</button>
-      <button id="signout_button" style="display: none;">Sign Out</button>
+      <button id="authorize_button" class="btn btn-light" style="display: none;">Sign In</button>
+      <button id="signout_button" class="btn btn-secondary" style="display: none;">Sign Out</button>
     </div>
 
-    <button id="create_button">Log manually</button>
+    <div class="section">
+      <p>
+        When a session is completed, a log will be automatically added to your calendar.<br>
+        Currently, the log can be added to your primary (default) calendar only.<br>
+        <small>
+          セッション終了時に自動的にカレンダーにログを追加します。<br>
+          現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
+        </small>
+      </p>
+    </div>
 
-    <pre id="content"></pre>
+    <div id="signed-in-only" class="section" style="display: none;">
+      <p>
+        You can manually add a log by clicking the button below.<br>
+        <small>
+          こちらのボタンでログを手動で追加できます。
+        </small>
+      </p>
+      <button id="create_button" class="btn btn-light">Add a Log</button>
+    </div>
+
+    <!-- <pre id="content"></pre> -->
+
+    <p>
+      Pom-Cal is still under development. Sorry for any inconvenience.<br>
+      Developed by <a href="https://twitter.com/siideemt" target="_blank">@siideemt</a><br>
+    </p>
 
     <footer class="footer">
-      <small>Built by <a href="https://www.charonworks.com" target="_blank">Charonworks</a></small>
-    </footer>
-  </div>
+      <ul class="justify-content-center">
+        <li class="">
+          <a class="" href="https://toolsiwant.net/">Tools I Want</a>
+        </li>
+        <li class="">
+          <a class="" href="contact.html">Contact</a>
+        </li>
+        <li class="">
+          <a class="" href="privacy-policy.html">Privacy Policy</a>
+        </li>
+      </ul>
 
+      <small>(c) 2018 <a href="https://www.charonworks.com" target="_blank">Charonworks</a></small>
+    </footer>
+  </div><!-- container end -->
+
+  <!-- audio elements -->
   <audio id="sound-session" preload="auto">
     <source src="assets/small-bell01.mp3">
   </audio>

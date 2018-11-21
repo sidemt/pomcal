@@ -200,7 +200,7 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
+      document.title = calcTimeLeft(this.state.timeLeft) + " [" + this.state.timerLabel + "] - Pom-Cal";
       return React.createElement(
         'div',
         { id: 'pomodoro-clock-inside' },

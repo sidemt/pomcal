@@ -162,7 +162,7 @@ class PomodoroClock extends React.Component {
   }
   
   render(){
-    document.title = calcTimeLeft(this.state.timeLeft) + "[" + this.state.timerLabel + "] - PomCal";
+    document.title = calcTimeLeft(this.state.timeLeft) + " [" + this.state.timerLabel + "] - Pom-Cal";
     return (
       <div id="pomodoro-clock-inside">
         <div className="btn-set timer">

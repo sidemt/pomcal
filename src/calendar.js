@@ -5,9 +5,11 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 // included, separated by spaces.
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 
+var authorizeDesc = document.getElementById('authorize_desc');
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var createButton = document.getElementById('create_button');
+var signedInOnly = document.getElementById('signed-in-only');
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -44,12 +46,17 @@ function initClient() {
  */
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
+    authorizeDesc.style.display = 'none';
     authorizeButton.style.display = 'none';
-    signoutButton.style.display = 'block';
-    listUpcomingEvents();
+    signoutButton.style.display = 'inline';
+    signedInOnly.style.display = 'block';
+    // listUpcomingEvents();
+    // listAvailableCalendars();
   } else {
-    authorizeButton.style.display = 'block';
+    authorizeDesc.style.display = 'block';
+    authorizeButton.style.display = 'inline';
     signoutButton.style.display = 'none';
+    signedInOnly.style.display = 'none';
   }
 }
 
@@ -82,6 +89,37 @@ function appendPre(message) {
   var textContent = document.createTextNode(message + '\n');
   pre.appendChild(textContent);
 }
+
+function appendOl(message) {
+  var ol = document.getElementById('event-list');
+  var newItem = "<li>" + message + "</li>";
+  ol.insertAdjacentHTML("beforeEnd", newItem);
+}
+
+/**
+ * Retrieve the list of available calendars
+ */
+function listAvailableCalendars() {
+  gapi.client.calendar.calendarList.list({
+    'minAccessRole': 'writer'
+  }).then(function(response) {
+    var calendars = response.result.items;
+    appendPre('Available Calendars:');
+
+    if (calendars.length > 0) {
+      for (i = 0; i < calendars.length; i++) {
+        var calendar = calendars[i];
+        var calendarId = calendar.id;
+        var calendarSummary = calendar.summary;
+        var isPrimary = calendar.primary;
+        appendPre(calendarId + ': ' + calendarSummary +' '+ isPrimary);
+      } 
+    } else {
+      appendPre('No calendar available.');
+    }
+  });
+}
+
 
 /**
  * Print the summary and start datetime/date of the next ten events in
@@ -147,34 +185,37 @@ function rfc3339(d) {
  * Add and event to the calendar when create button is clicked
  */
 function createEvent(duration) {
-
-  var startTime = new Date();
-  var endTime = new Date();
-  startTime.setMinutes(startTime.getMinutes() - duration);
-  // end.setMinutes(end.getMinutes() + 25);
-  startTime = rfc3339(startTime);
-  endTime = rfc3339(endTime);
-  console.log(startTime);
-  console.log(endTime);
-  var event = {
-    'summary': 'Pomodoro',
-    'start': {
-      'dateTime': startTime,
-      'timeZone': 'Asia/Tokyo'
-    },
-    'end': {
-      'dateTime': endTime,
-      'timeZone': 'Asia/Tokyo'
-    },
-  };
-
-  var request = gapi.client.calendar.events.insert({
-    'calendarId': 'primary',
-    'resource': event
-  });
-
-  request.execute(function(event) {
-    appendPre('Event created: ' + event.htmlLink);
-  });
-
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()){
+    var startTime = new Date();
+    var endTime = new Date();
+    startTime.setMinutes(startTime.getMinutes() - duration);
+    // Convert date to RFC3339 format
+    startTime = rfc3339(startTime);
+    endTime = rfc3339(endTime);
+  
+    var event = {
+      'summary': 'Pomodoro',
+      'start': {
+        'dateTime': startTime
+      },
+      'end': {
+        'dateTime': endTime
+      },
+      'description': 
+        'Pomodoro log created from Pom-Cal https://toolsiwant.net/pom-cal/'
+    };
+  
+    var request = gapi.client.calendar.events.insert({
+      'calendarId': 'primary',
+      'resource': event
+    });
+  
+    request.execute(function(event) {
+      console.log(event);
+      var newText = 'Pomodoro Done: ' + '<a href=\"' + event.htmlLink + '\" target=\"_blank\">View in Calendar</a>';
+      appendOl(newText);
+    });  
+  } else {
+    console.log("Not signed in");
+  }
 }
