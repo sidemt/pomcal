@@ -34,6 +34,7 @@ function initClient() {
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
+    createButton.onclick = handleCreateClick;
   });
 }
 
@@ -64,6 +65,10 @@ function handleAuthClick(event) {
  */
 function handleSignoutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
+}
+
+function handleCreateClick(event) {
+  createEvent(parseInt(document.getElementById('session-length').innerText), 10);
 }
 
 /**
