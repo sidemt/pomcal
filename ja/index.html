@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -15,32 +15,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="Pomodoro timer which can automatically add logs to Google Calendar">
+  <meta name="description" content="Googleカレンダーに自動でログを記録できるポモドーロタイマーです。">
   <!--  Bootstrap CSS  -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <!--  Google Fonts  -->
   <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 
-  <title>Pom-Cal - Pomodoro timer integrated with Google Calendar</title>
+  <title>Pom-Cal - Googleカレンダー連携ポモドーロタイマー</title>
 </head>
 
 <body id="body">
   <div class="container">
     <div class="lang-selection">
-      English | <a href="ja/index.html">Japanese</a>
+      <a href="../index.html">English</a> | Japanese
     </div>
     <h1>Pom-Cal</h1>
-    <p>Pomodoro timer integrated with Google Calendar</p>
+    <p>Googleカレンダー連携ポモドーロタイマー</p>
     <div id="pomodoro-clock"></div>
-    <p>*The timer plays a sound on start/end*</p>
+    <p>※タイマーの開始時・終了時に音が鳴ります。</p>
 
     <ol id="event-list" class="number-list"></ol>
 
     <div class="descriptions">
       <div class="section">
         <p id="authorize_desc" style="display: none;">
-          Sign in with Google to log your work on Google Calendar
+          Googleカレンダーにログを記録するにはサインインしてください。
         </p>
         <!--Add buttons to initiate auth sequence and sign out-->
         <button id="authorize_button" class="btn btn-light" style="display: none;">Sign In</button>
@@ -49,14 +49,14 @@
   
       <div class="section">
         <p>
-          When a session is completed, a log will be automatically added to your calendar.<br>
-          Currently, the log can be added to your primary (default) calendar only.
+          セッション終了時に自動的にカレンダーにログを追加できます。<br>
+          現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
         </p>
       </div>
   
       <div id="signed-in-only" class="section" style="display: none;">
         <p>
-          You can manually add a log by clicking the button below.
+          こちらのボタンでログを手動で追加できます。
         </p>
         <button id="create_button" class="btn btn-light">Add a Log</button>
       </div>
@@ -96,10 +96,10 @@
 
   <!-- audio elements -->
   <audio id="sound-session" preload="auto">
-    <source src="assets/small-bell01.mp3">
+    <source src="../assets/small-bell01.mp3">
   </audio>
   <audio id="sound-break" preload="auto">
-    <source src="assets/se_maoudamashii_chime06.mp3">
+    <source src="../assets/se_maoudamashii_chime06.mp3">
   </audio>
 
   <!--  Bootstrap JavaScript  -->
@@ -112,13 +112,13 @@
     onload="this.onload=function(){};handleClientLoad()"
     onreadystatechange="if (this.readyState === 'complete') this.onload()">
   </script>
-  <script type="text/javascript" src="js/keys.js"></script>
-  <script type="text/javascript" src="js/calendar.js"></script>
+  <script type="text/javascript" src="../js/keys.js"></script>
+  <script type="text/javascript" src="../js/calendar.js"></script>
 
   <!-- Load pomodoro timer -->
   <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-  <script  src="js/pom-clock.js"></script>
+  <script  src="../js/pom-clock.js"></script>
 </body>
 
 </html>

@@ -27,6 +27,11 @@ a:hover {
   padding: 2rem .5rem;
 }
 
+.lang-selection {
+  text-align: right;
+  font-size: 0.7rem;
+}
+
 #pomodoro-clock-inside {
   align-items: center;
   display: grid;
