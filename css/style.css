@@ -65,6 +65,7 @@ a:hover {
 }
 
 #pomodoro-clock-inside .btn-set {
+  background-color: rgba(255, 255, 250, 0.2);
   padding: 0.5rem;
   margin: 0.5rem;
   border: 1px solid var(--main-white);
@@ -85,10 +86,9 @@ a:hover {
 }
 
 .descriptions {
-  background-color: rgba(255, 255, 250, 0.3);
+  background-color: rgba(255, 255, 250, 0.2);
   border: 1px solid var(--main-white);
   border-radius: 5px;
-  font-family: "Helvetica Neue", Arial, sans-serif;
   max-width: 41rem;
   margin: auto;
 }
