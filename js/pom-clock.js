@@ -18,6 +18,13 @@ var SOUND_BREAK = document.getElementById('sound-break');
 
 var beep = SOUND_SESSION;
 
+function playSound(soundSetting) {
+  // Play the sound if sound settings is ON
+  if (soundSetting) {
+    beep.play();
+  }
+}
+
 function mmss(m, s) {
   var m0 = ('00' + m).slice(-2);
   var s0 = ('00' + s).slice(-2);
@@ -44,7 +51,8 @@ var PomodoroClock = function (_React$Component) {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
-      isRunning: false
+      isRunning: false,
+      sound: true
     };
     _this.reset = _this.reset.bind(_this);
     _this.decrementBreak = _this.decrementBreak.bind(_this);
@@ -55,6 +63,7 @@ var PomodoroClock = function (_React$Component) {
     _this.toggleTimer = _this.toggleTimer.bind(_this);
     _this.startStop = _this.startStop.bind(_this);
     _this.updateTimeLeft = _this.updateTimeLeft.bind(_this);
+    _this.toggleSound = _this.toggleSound.bind(_this);
     return _this;
   }
 
@@ -135,7 +144,7 @@ var PomodoroClock = function (_React$Component) {
         });
       } else {
         this.toggleTimer();
-        beep.play();
+        playSound(this.state.sound);
       }
     }
   }, {
@@ -169,7 +178,7 @@ var PomodoroClock = function (_React$Component) {
           isRunning: true
         });
         intervalId = setInterval(this.countDown, 1000);
-        beep.play();
+        playSound(this.state.sound);
       } else {
         // Stop the timer
         this.setState({
@@ -196,6 +205,15 @@ var PomodoroClock = function (_React$Component) {
       } else {
         return;
       }
+    }
+  }, {
+    key: 'toggleSound',
+    value: function toggleSound() {
+      this.setState(function (state) {
+        return {
+          sound: !state.sound
+        };
+      });
     }
   }, {
     key: 'render',
@@ -287,7 +305,8 @@ var PomodoroClock = function (_React$Component) {
               '+'
             )
           )
-        )
+        ),
+        React.createElement(SoundSwitch, { soundSetting: this.state.sound, onClick: this.toggleSound })
       );
     }
   }]);
@@ -317,6 +336,40 @@ var TimeLeft = function (_React$Component2) {
   }]);
 
   return TimeLeft;
+}(React.Component);
+
+var SoundSwitch = function (_React$Component3) {
+  _inherits(SoundSwitch, _React$Component3);
+
+  function SoundSwitch(props) {
+    _classCallCheck(this, SoundSwitch);
+
+    return _possibleConstructorReturn(this, (SoundSwitch.__proto__ || Object.getPrototypeOf(SoundSwitch)).call(this, props));
+  }
+
+  _createClass(SoundSwitch, [{
+    key: 'render',
+    value: function render() {
+      var soundSetting = this.props.soundSetting;
+      return React.createElement(
+        'div',
+        { id: 'sound-setting' },
+        React.createElement(
+          'span',
+          { id: 'switch-label' },
+          'Sound '
+        ),
+        React.createElement(
+          'label',
+          { className: 'switch' },
+          soundSetting ? React.createElement('input', { type: 'checkbox', checked: true }) : React.createElement('input', { type: 'checkbox' }),
+          React.createElement('span', { className: 'slider round', onClick: this.props.onClick })
+        )
+      );
+    }
+  }]);
+
+  return SoundSwitch;
 }(React.Component);
 
 ReactDOM.render(React.createElement(PomodoroClock, null), document.getElementById('pomodoro-clock'));

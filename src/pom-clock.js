@@ -10,6 +10,12 @@ const SOUND_BREAK = document.getElementById('sound-break');
 
 var beep = SOUND_SESSION;
 
+function playSound(soundSetting) {
+  // Play the sound if sound settings is ON
+  if (soundSetting) {
+    beep.play();
+  }
+}
 
 function mmss(m, s) {
   var m0 = ('00' + m).slice(-2);
@@ -32,7 +38,8 @@ class PomodoroClock extends React.Component {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
-      isRunning: false
+      isRunning: false,
+      sound: true
     };
     this.reset = this.reset.bind(this);
     this.decrementBreak = this.decrementBreak.bind(this);
@@ -43,6 +50,7 @@ class PomodoroClock extends React.Component {
     this.toggleTimer = this.toggleTimer.bind(this);
     this.startStop = this.startStop.bind(this);
     this.updateTimeLeft = this.updateTimeLeft.bind(this);
+    this.toggleSound = this.toggleSound.bind(this);
   }
   
   reset() {
@@ -105,7 +113,7 @@ class PomodoroClock extends React.Component {
         }))
       } else {
         this.toggleTimer();
-        beep.play();
+        playSound(this.state.sound);
       }
     }
   
@@ -137,7 +145,7 @@ class PomodoroClock extends React.Component {
         isRunning: true
       })
       intervalId = setInterval(this.countDown, 1000);
-      beep.play();
+      playSound(this.state.sound);
     } else {
       // Stop the timer
       this.setState({
@@ -159,6 +167,12 @@ class PomodoroClock extends React.Component {
     } else {
       return;
     }
+  }
+
+  toggleSound() {
+    this.setState((state)=>({
+      sound: !state.sound
+    }))
   }
   
   render(){
@@ -195,6 +209,7 @@ class PomodoroClock extends React.Component {
           </div>
         </div>
 
+        <SoundSwitch soundSetting={this.state.sound} onClick={this.toggleSound} />
       </div>
     );
   }
@@ -212,5 +227,22 @@ class TimeLeft extends React.Component {
   }
 }
 
-ReactDOM.render(<PomodoroClock />, document.getElementById('pomodoro-clock'));
+class SoundSwitch extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    var soundSetting = this.props.soundSetting;
+    return(
+        <div id="sound-setting">
+          <span id="switch-label">Sound </span>
+          <label className="switch">
+            {soundSetting ? <input type="checkbox" checked /> : <input type="checkbox" />}
+            <span className="slider round" onClick={this.props.onClick}></span>
+          </label>
+        </div>
+    );
+  }
+}
 
+ReactDOM.render(<PomodoroClock />, document.getElementById('pomodoro-clock'));
