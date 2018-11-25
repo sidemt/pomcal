@@ -63,11 +63,7 @@
       </div>
   
       <div id="signed-in-only" class="section" style="display: none;">
-        <div>
-          Task: <input id="event-name" type="text" placeholder="Event title on your calendar"><br>
-          Description: <input id="event-detail" type="text" placeholder="Event description on your calendar"><br>
-          <button id="submit" class="btn btn-light"  onclick="setEventDetail()">Set task details</button>
-        </div>
+        <div id="event-form"></div>
         <p>
           You can manually add a log by clicking the button below.
         </p>
@@ -127,12 +123,12 @@
   </script>
   <script type="text/javascript" src="js/keys.js"></script>
   <script type="text/javascript" src="js/calendar.js"></script>
-  <script type="text/javascript" src="js/event-form.js"></script>
 
   <!-- Load pomodoro timer -->
   <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
   <script  src="js/pom-clock.js"></script>
+  <script type="text/javascript" src="js/event-form.js"></script>
 </body>
 
 </html>

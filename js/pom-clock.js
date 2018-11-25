@@ -152,8 +152,9 @@ var PomodoroClock = function (_React$Component) {
     value: function toggleTimer() {
       if (this.state.timerLabel == SESSION) {
         // Insert event to calendar
-        createEvent(this.state.sessionLength, eventName, eventDetail);
-        // document.getElementById('create_button').click();
+        var name = document.getElementById('current-event-name').innerText;
+        var desc = document.getElementById('current-event-desc').innerText;
+        createEvent(this.state.sessionLength, name, desc);
         this.setState({
           timerLabel: BREAK,
           timeLeft: this.state.breakLength * 60

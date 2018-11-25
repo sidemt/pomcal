@@ -75,7 +75,10 @@ function handleSignoutClick(event) {
 }
 
 function handleCreateClick(event) {
-  createEvent(parseInt(document.getElementById('session-length').innerText, 10), eventName, eventDetail);
+  let duration = parseInt(document.getElementById('session-length').innerText, 10);
+  let name = document.getElementById('current-event-name').innerText;
+  let desc = document.getElementById('current-event-desc').innerText;
+  createEvent(duration, name, desc);
 }
 
 /**
