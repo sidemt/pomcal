@@ -6,15 +6,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// var eventName;
-// var eventDetail;
+function validateInput(input) {
+  var invalidChar = /[\<\>\&\'\"\$\%\;]/gi; // unwanted charactors in user input
+  if (invalidChar.test(input)) {
+    return;
+  }
 
-// function setEventDetail() {
-//   eventName = document.getElementById("event-name").value;
-//   eventDetail = document.getElementById("event-detail").value;
-//   console.log("eventName= " + eventName);
-//   console.log("eventDetail= " + eventDetail);
-// }
+  return;
+}
 
 var EventForm = function (_React$Component) {
   _inherits(EventForm, _React$Component);
@@ -63,21 +62,33 @@ var EventForm = function (_React$Component) {
     value: function render() {
       return React.createElement(
         'div',
-        null,
-        'Current Task: ',
+        { className: 'form-area' },
         React.createElement(
-          'span',
-          { id: 'current-event-name' },
-          this.state.eventName
+          'div',
+          { className: 'current-value text-left' },
+          React.createElement(
+            'strong',
+            null,
+            'Current Task: '
+          ),
+          React.createElement(
+            'span',
+            { id: 'current-event-name' },
+            this.state.eventName
+          ),
+          React.createElement('br', null),
+          React.createElement(
+            'strong',
+            null,
+            'Description: '
+          ),
+          React.createElement(
+            'span',
+            { id: 'current-event-desc' },
+            this.state.eventDetail
+          ),
+          React.createElement('br', null)
         ),
-        React.createElement('br', null),
-        'Description: ',
-        React.createElement(
-          'span',
-          { id: 'current-event-desc' },
-          this.state.eventDetail
-        ),
-        React.createElement('br', null),
         this.state.editState ? React.createElement(EditForm, { onSubmit: this.setDetails, onCancel: this.cancel }) : React.createElement(
           'button',
           { className: 'btn btn-light', onClick: this.editDetails },
@@ -105,12 +116,28 @@ var EditForm = function (_React$Component2) {
       return React.createElement(
         'div',
         null,
-        'Task: ',
-        React.createElement('input', { id: 'event-name', type: 'text', placeholder: 'Event title on your calendar' }),
-        React.createElement('br', null),
-        'Description: ',
-        React.createElement('input', { id: 'event-detail', type: 'text', placeholder: 'Event description on your calendar' }),
-        React.createElement('br', null),
+        React.createElement(
+          'div',
+          { className: 'form-group row' },
+          React.createElement(
+            'label',
+            { 'for': 'event-name', 'class': 'col-sm-2 col-form-label text-left' },
+            'Task '
+          ),
+          React.createElement('input', { id: 'event-name', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event title on your calendar' }),
+          React.createElement('br', null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group row' },
+          React.createElement(
+            'label',
+            { 'for': 'event-detail', 'class': 'col-sm-2 col-form-label text-left' },
+            'Description '
+          ),
+          React.createElement('input', { id: 'event-detail', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event description on your calendar' }),
+          React.createElement('br', null)
+        ),
         React.createElement(
           'button',
           { id: 'submit', className: 'btn btn-light', onClick: this.props.onSubmit },
@@ -118,7 +145,7 @@ var EditForm = function (_React$Component2) {
         ),
         React.createElement(
           'button',
-          { id: 'cancel', className: 'btn btn-dark', onClick: this.props.onCancel },
+          { id: 'cancel', className: 'btn btn-secondary', onClick: this.props.onCancel },
           'Cancel'
         )
       );
