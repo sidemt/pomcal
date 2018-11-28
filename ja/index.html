@@ -59,21 +59,22 @@
           セッション終了時に自動的にカレンダーにログを追加できます。<br>
           現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
         </p>
+        <p>カレンダー上のログは下記のタスク名と説明(Description)で登録されます。</p>
       </div>
   
       <div id="signed-in-only" class="section" style="display: none;">
+        <div id="event-form"></div>
         <p>
           こちらのボタンでログを手動で追加できます。
         </p>
         <button id="create_button" class="btn btn-light">Add a Log</button>
       </div>
   
-      <!-- <pre id="content"></pre> -->
     </div>
 
     <div class="section">
       <small>
-        Sounds: <a href="http://www.kurage-kosho.info" title="フリー効果音素材 くらげ工匠" target="_blank">フリー効果音素材 くらげ工匠</a>, <a href="https://maoudamashii.jokersounds.com/" title="フリー音楽素材/魔王魂" target="_blank">フリー音楽素材/魔王魂</a>
+        Sounds by: <a href="http://www.kurage-kosho.info" title="フリー効果音素材 くらげ工匠" target="_blank">フリー効果音素材 くらげ工匠</a>, <a href="https://maoudamashii.jokersounds.com/" title="フリー音楽素材/魔王魂" target="_blank">フリー音楽素材/魔王魂</a>
       </small>
     </div>
 
@@ -81,12 +82,6 @@
       <ul class="justify-content-center">
         <li class="">
           <a class="" href="https://toolsiwant.net/">Tools I Want</a>
-        </li>
-        <li class="">
-          <a class="" href="https://toolsiwant.net/contact.html">Contact</a>
-        </li>
-        <li class="">
-          <a class="" href="https://toolsiwant.net/privacy-policy.html">Privacy Policy</a>
         </li>
       </ul>
 
@@ -116,9 +111,10 @@
   <script type="text/javascript" src="../js/calendar.js"></script>
 
   <!-- Load pomodoro timer -->
-  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-  <script  src="../js/pom-clock.js"></script>
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script type="text/javascript" src="../js/pom-clock.js"></script>
+  <script type="text/javascript" src="../js/event-form.js"></script>
 </body>
 
 </html>
