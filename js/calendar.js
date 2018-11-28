@@ -75,7 +75,10 @@ function handleSignoutClick(event) {
 }
 
 function handleCreateClick(event) {
-  createEvent(parseInt(document.getElementById('session-length').innerText), 10);
+  var duration = parseInt(document.getElementById('session-length').innerText, 10);
+  var name = document.getElementById('current-event-name').innerText;
+  var desc = document.getElementById('current-event-desc').innerText;
+  createEvent(duration, name, desc);
 }
 
 /**
@@ -178,6 +181,9 @@ function rfc3339(d) {
  * Add and event to the calendar when create button is clicked
  */
 function createEvent(duration) {
+  var eventName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Pomodoro";
+  var eventDetail = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
     var startTime = new Date();
     var endTime = new Date();
@@ -187,14 +193,14 @@ function createEvent(duration) {
     endTime = rfc3339(endTime);
 
     var event = {
-      'summary': 'Pomodoro',
+      'summary': eventName,
       'start': {
         'dateTime': startTime
       },
       'end': {
         'dateTime': endTime
       },
-      'description': 'Pomodoro log created from Pom-Cal https://toolsiwant.net/pom-cal/'
+      'description': eventDetail
     };
 
     var request = gapi.client.calendar.events.insert({

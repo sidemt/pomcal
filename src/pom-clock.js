@@ -2,27 +2,43 @@
 // Used to stop the setInterval function by clearInterval
 var intervalId;
 
+// Break/Session labels
 const BREAK = 'Break';
 const SESSION = 'Session';
 
+// Audio elements on the html file
 const SOUND_SESSION = document.getElementById('sound-session');
 const SOUND_BREAK = document.getElementById('sound-break');
 
+// Which sound to be played
 var beep = SOUND_SESSION;
 
+/**
+ * Checks the sound setting and plays the sound currently set in variable `beep`
+ * @param {Boolean} soundSetting 
+ */
 function playSound(soundSetting) {
-  // Play the sound if sound settings is ON
+  // Play the sound if sound settings is ON (true)
   if (soundSetting) {
     beep.play();
   }
 }
 
+/**
+ * Returns given minutes and seconds in "dd:dd" format
+ * @param {Number} m 
+ * @param {Number} s 
+ */
 function mmss(m, s) {
   var m0 = ('00' + m).slice(-2);
   var s0 = ('00' + s).slice(-2);
   return m0 + ':' + s0;
 }
 
+/**
+ * Returns given seconds in "dd:dd" format
+ * @param {Number} timeLeft 
+ */
 function calcTimeLeft(timeLeft) {
   var minutes = Math.floor((timeLeft % (60 * 60)) / 60);
   var seconds = Math.floor(timeLeft % (60));
@@ -39,7 +55,7 @@ class PomodoroClock extends React.Component {
       breakLength: 5,
       sessionLength: 25,
       isRunning: false,
-      sound: true
+      soundSetting: true
     };
     this.reset = this.reset.bind(this);
     this.decrementBreak = this.decrementBreak.bind(this);
@@ -50,10 +66,14 @@ class PomodoroClock extends React.Component {
     this.toggleTimer = this.toggleTimer.bind(this);
     this.startStop = this.startStop.bind(this);
     this.updateTimeLeft = this.updateTimeLeft.bind(this);
-    this.toggleSound = this.toggleSound.bind(this);
+    this.toggleSoundSetting = this.toggleSoundSetting.bind(this);
   }
   
+  /**
+   * Resets the timer to default state
+   */
   reset() {
+    // Reset timer
     this.setState({
       timerLabel: SESSION,
       timeLeft: 1500,
@@ -62,12 +82,17 @@ class PomodoroClock extends React.Component {
       isRunning: false
     })
     clearInterval(intervalId);
+    // Reset sound
     beep.pause();
     beep.currentTime = 0;
     beep = SOUND_SESSION;
+    // Reset background color
     document.getElementById('body').style.backgroundColor = "var(--main-red)";
   }
   
+  /**
+   * Decrements Break length by 1 min
+   */
   decrementBreak() {
     if (this.state.breakLength > 1) {
       this.setState((state) => ({
@@ -77,6 +102,9 @@ class PomodoroClock extends React.Component {
     }
   }
   
+  /**
+   * Increments Break length by 1 min
+   */
   incrementBreak() {
     if (this.state.breakLength < 60) {
       this.setState((state) => ({
@@ -86,6 +114,9 @@ class PomodoroClock extends React.Component {
     }
   }
   
+  /**
+   * Decrements Session length by 1 min
+   */
   decrementSession() {
     if (this.state.sessionLength > 1) {
       this.setState((state) => ({
@@ -95,6 +126,9 @@ class PomodoroClock extends React.Component {
     }
   }
   
+  /**
+   * Increments Session length by 1 min
+   */
   incrementSession() {
     let currentLength = this.state.sessionLength;
     let newLength = currentLength + 1;
@@ -106,38 +140,56 @@ class PomodoroClock extends React.Component {
     }
   }
   
+  /**
+   * Counts down the time
+   * If the time reaches 0, toggle session/break and play the timer sound
+   */
   countDown() {
-      if (this.state.timeLeft > 0) {
+      if (this.state.timeLeft > 1) {
         this.setState((state)=>({
           timeLeft: state.timeLeft - 1
         }))
       } else {
         this.toggleTimer();
-        playSound(this.state.sound);
       }
     }
   
+    /**
+     * Toggle session/break
+     */
   toggleTimer() {
     if (this.state.timerLabel == SESSION) {
-      // Insert event to calendar
-      createEvent(this.state.sessionLength);
-      // document.getElementById('create_button').click();
+      // Insert an event to the calendar
+      let name = document.getElementById('current-event-name').innerText;
+      let desc = document.getElementById('current-event-desc').innerText;
+      createEvent(this.state.sessionLength, name, desc);
       this.setState({
         timerLabel: BREAK,
         timeLeft: this.state.breakLength * 60
       })
+      // Change the background color
       document.getElementById('body').style.backgroundColor = "var(--main-green)";
+      // Change the sound to be played
       beep = SOUND_BREAK;
+      // Play the sound
+      playSound(this.state.soundSetting);
     } else {
       this.setState({
         timerLabel: SESSION,
         timeLeft: this.state.sessionLength * 60
       })
+      // Change the background color
       document.getElementById('body').style.backgroundColor = "var(--main-red)";
+      // Change the sound to be played
       beep = SOUND_SESSION;
+      // Play the sound
+      playSound(this.state.soundSetting);
     }
   }
   
+  /**
+   * Starts/stops the timer according to the current state
+   */
   startStop() {
     if (!this.state.isRunning) {
       // Start the timer
@@ -145,16 +197,24 @@ class PomodoroClock extends React.Component {
         isRunning: true
       })
       intervalId = setInterval(this.countDown, 1000);
-      playSound(this.state.sound);
+      // Play the sound
+      playSound(this.state.soundSetting);
     } else {
       // Stop the timer
       this.setState({
         isRunning: false
       })
       clearInterval(intervalId);
+      // Stop the sound
+      beep.pause();
+      beep.currentTime = 0;
     }
   }
   
+  /**
+   * Update timeLeft value according to the current sessionLength
+   * @param {String} label 
+   */
   updateTimeLeft(label) {
     if (label == SESSION && this.state.timerLabel == SESSION) {
       this.setState((state)=>({
@@ -169,12 +229,18 @@ class PomodoroClock extends React.Component {
     }
   }
 
-  toggleSound() {
+  /**
+   * Toggles ON/OFF of the sound setting
+   */
+  toggleSoundSetting() {
     this.setState((state)=>({
-      sound: !state.sound
+      soundSetting: !state.soundSetting
     }))
   }
   
+  /**
+   * Render the pomodoro timer
+   */
   render(){
     document.title = calcTimeLeft(this.state.timeLeft) + " [" + this.state.timerLabel + "] - Pom-Cal";
     return (
@@ -209,12 +275,15 @@ class PomodoroClock extends React.Component {
           </div>
         </div>
 
-        <SoundSwitch soundSetting={this.state.sound} onClick={this.toggleSound} />
+        <SoundSwitch soundSetting={this.state.soundSetting} onClick={this.toggleSoundSetting} />
       </div>
     );
   }
 }
 
+/**
+ * Component to show the remaining time
+ */
 class TimeLeft extends React.Component {
   constructor(props) {
     super(props);
@@ -227,6 +296,9 @@ class TimeLeft extends React.Component {
   }
 }
 
+/**
+ * Component for toggle switch of sound ON/OFF setting
+ */
 class SoundSwitch extends React.Component {
   constructor(props) {
     super(props);
