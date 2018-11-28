@@ -6,15 +6,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function validateInput(input) {
-  var invalidChar = /[\<\>\&\'\"\$\%\;]/gi; // unwanted charactors in user input
-  if (invalidChar.test(input)) {
-    return;
-  }
-
-  return;
-}
-
+/**
+ * Component to display the input form to specify event name and description
+ */
 var EventForm = function (_React$Component) {
   _inherits(EventForm, _React$Component);
 
@@ -36,6 +30,11 @@ var EventForm = function (_React$Component) {
 
   _createClass(EventForm, [{
     key: 'setDetails',
+
+
+    /**
+     * Store user input to this.state and close input fields
+     */
     value: function setDetails() {
       this.setState({
         eventName: document.getElementById("event-name").value,
@@ -43,6 +42,11 @@ var EventForm = function (_React$Component) {
         editState: false
       });
     }
+
+    /**
+     * Show input fields
+     */
+
   }, {
     key: 'editDetails',
     value: function editDetails() {
@@ -50,6 +54,11 @@ var EventForm = function (_React$Component) {
         editState: true
       });
     }
+
+    /**
+     * Close input fields without saving
+     */
+
   }, {
     key: 'cancel',
     value: function cancel() {
@@ -100,6 +109,11 @@ var EventForm = function (_React$Component) {
 
   return EventForm;
 }(React.Component);
+
+/**
+ * Input fields to be displayed when this.state.editState is true
+ */
+
 
 var EditForm = function (_React$Component2) {
   _inherits(EditForm, _React$Component2);

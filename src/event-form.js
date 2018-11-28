@@ -1,13 +1,6 @@
-function validateInput(input) {
-  const invalidChar = /[\<\>\&\'\"\$\%\;]/gi; // unwanted charactors in user input
-  if (invalidChar.test(input)) {
-    return 
-  }
-
-  return
-
-}
-
+/**
+ * Component to display the input form to specify event name and description
+ */
 class EventForm extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +14,9 @@ class EventForm extends React.Component {
     this.cancel = this.cancel.bind(this);
   };
 
+  /**
+   * Store user input to this.state and close input fields
+   */
   setDetails() {
     this.setState({
       eventName: document.getElementById("event-name").value,
@@ -29,12 +25,18 @@ class EventForm extends React.Component {
     })
   }
 
+  /**
+   * Show input fields
+   */
   editDetails() {
     this.setState({
       editState: true
     })
   }
 
+  /**
+   * Close input fields without saving
+   */
   cancel() {
     this.setState({
       editState: false
@@ -56,6 +58,9 @@ class EventForm extends React.Component {
   }
 }
 
+/**
+ * Input fields to be displayed when this.state.editState is true
+ */
 class EditForm extends React.Component {
   constructor(props) {
     super(props);
