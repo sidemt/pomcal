@@ -47,11 +47,11 @@ class EventForm extends React.Component {
     return (
       <div className="form-area">
         <div className="current-value text-left">
-          <strong>Current Task: </strong><span id="current-event-name">{this.state.eventName}</span><br />
+          <strong>Task: </strong><span id="current-event-name">{this.state.eventName}</span><br />
           <strong>Description: </strong><span id="current-event-desc">{this.state.eventDetail}</span><br />
         </div>
 
-        {this.state.editState ? <EditForm onSubmit={this.setDetails} onCancel={this.cancel} /> : <button className="btn btn-light" onClick={this.editDetails}>Edit Event Details</button>}
+        {this.state.editState ? <EditForm onSubmit={this.setDetails} onCancel={this.cancel} /> : <button className="btn btn-light" onClick={this.editDetails}>Edit Task</button>}
       </div>
 
     );
@@ -68,16 +68,17 @@ class EditForm extends React.Component {
   render() {
     return(
       <div>
+        <p><strong>Edit Task</strong></p>
         <div className="form-group row">
           <label for="event-name" class="col-sm-2 col-form-label text-left">Task </label>
-          <input id="event-name" className="form-control col-sm-10" type="text" placeholder="Event title on your calendar" /><br />
+          <input id="event-name" className="form-control col-sm-10" type="text" placeholder="Event title" /><br />
         </div>
         <div className="form-group row">
           <label for="event-detail" class="col-sm-2 col-form-label text-left">Description </label>
-          <input id="event-detail" className="form-control col-sm-10" type="text" placeholder="Event description on your calendar" /><br />
+          <input id="event-detail" className="form-control col-sm-10" type="text" placeholder="Event description" /><br />
         </div>
 
-        <button id="submit" className="btn btn-light"  onClick={this.props.onSubmit}>Set task details</button>
+        <button id="submit" className="btn btn-light"  onClick={this.props.onSubmit}>Set Task</button>
         <button id="cancel" className="btn btn-secondary"  onClick={this.props.onCancel}>Cancel</button>
       </div>
 

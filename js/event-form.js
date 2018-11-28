@@ -78,7 +78,7 @@ var EventForm = function (_React$Component) {
           React.createElement(
             'strong',
             null,
-            'Current Task: '
+            'Task: '
           ),
           React.createElement(
             'span',
@@ -101,7 +101,7 @@ var EventForm = function (_React$Component) {
         this.state.editState ? React.createElement(EditForm, { onSubmit: this.setDetails, onCancel: this.cancel }) : React.createElement(
           'button',
           { className: 'btn btn-light', onClick: this.editDetails },
-          'Edit Event Details'
+          'Edit Task'
         )
       );
     }
@@ -131,6 +131,15 @@ var EditForm = function (_React$Component2) {
         'div',
         null,
         React.createElement(
+          'p',
+          null,
+          React.createElement(
+            'strong',
+            null,
+            'Edit Task'
+          )
+        ),
+        React.createElement(
           'div',
           { className: 'form-group row' },
           React.createElement(
@@ -138,7 +147,7 @@ var EditForm = function (_React$Component2) {
             { 'for': 'event-name', 'class': 'col-sm-2 col-form-label text-left' },
             'Task '
           ),
-          React.createElement('input', { id: 'event-name', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event title on your calendar' }),
+          React.createElement('input', { id: 'event-name', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event title' }),
           React.createElement('br', null)
         ),
         React.createElement(
@@ -149,13 +158,13 @@ var EditForm = function (_React$Component2) {
             { 'for': 'event-detail', 'class': 'col-sm-2 col-form-label text-left' },
             'Description '
           ),
-          React.createElement('input', { id: 'event-detail', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event description on your calendar' }),
+          React.createElement('input', { id: 'event-detail', className: 'form-control col-sm-10', type: 'text', placeholder: 'Event description' }),
           React.createElement('br', null)
         ),
         React.createElement(
           'button',
           { id: 'submit', className: 'btn btn-light', onClick: this.props.onSubmit },
-          'Set task details'
+          'Set Task'
         ),
         React.createElement(
           'button',
