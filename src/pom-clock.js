@@ -145,7 +145,7 @@ class PomodoroClock extends React.Component {
    * If the time reaches 0, toggle session/break and play the timer sound
    */
   countDown() {
-      if (this.state.timeLeft > 0) {
+      if (this.state.timeLeft > 1) {
         this.setState((state)=>({
           timeLeft: state.timeLeft - 1
         }))

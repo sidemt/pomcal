@@ -186,7 +186,7 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'countDown',
     value: function countDown() {
-      if (this.state.timeLeft > 0) {
+      if (this.state.timeLeft > 1) {
         this.setState(function (state) {
           return {
             timeLeft: state.timeLeft - 1
