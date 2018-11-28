@@ -219,5 +219,7 @@ function createEvent(duration, eventName = "Pomodoro", eventDetail = "") {
     });  
   } else {
     console.log("Not signed in");
+    var newText = 'Pomodoro Done: Not Signed In';
+    appendOl(newText);
   }
 }
