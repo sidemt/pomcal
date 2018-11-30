@@ -37,6 +37,9 @@ function initClient() {
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
     createButton.onclick = handleCreateClick;
+  }).then(function() {
+    // Get calendar list
+    getCalendarList();
   });
 }
 
@@ -93,10 +96,32 @@ function appendPre(message) {
   pre.appendChild(textContent);
 }
 
+/**
+ * Append a li element into the ol element
+ * Used to display the results of the API call.
+ *
+ * @param {string} message Text to be placed in li element.
+ */
 function appendOl(message) {
   var ol = document.getElementById('event-list');
   var newItem = "<li>" + message + "</li>";
   ol.insertAdjacentHTML("beforeEnd", newItem);
+}
+
+/**
+ * Append an option element into the select element
+ *
+ * @param {string} value Calendar ID
+ * @param {string} summary Calendar name
+ */
+function appendOption(value, summary, primary) {
+  var select = document.getElementById('calendar-select');
+  if (primary) {
+    var newItem = "<option value=\"" + value + "\" selected>" + summary + "</option>";
+  } else {
+    var newItem = "<option value=\"" + value + "\">" + summary + "</option>";
+  }
+  select.insertAdjacentHTML("beforeEnd", newItem);
 }
 
 /**
@@ -221,5 +246,34 @@ function createEvent(duration, eventName = "Pomodoro", eventDetail = "") {
     console.log("Not signed in");
     var newText = 'Pomodoro Done: Not Signed In';
     appendOl(newText);
+  }
+}
+
+/**
+ * Get the list of calendars
+ */
+function getCalendarList() {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()){
+
+    var request = gapi.client.calendar.calendarList.list({
+      'minAccessRole': 'writer'
+    });
+  
+    request.execute(function(calendarList) {
+      console.log(calendarList);
+
+      var idList = [];
+      calendarList.items.forEach(function(item) {
+        idList.push({
+          'id': item.id,
+          'summary': item.summary,
+          'primary': item.primary
+        });
+        appendOption(item.id, item.summary, item.primary);
+      });
+      console.log(idList);
+    });  
+  } else {
+    console.log("Not signed in");
   }
 }
