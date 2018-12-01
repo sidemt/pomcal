@@ -162,7 +162,8 @@ class PomodoroClock extends React.Component {
       // Insert an event to the calendar
       let name = document.getElementById('current-event-name').innerText;
       let desc = document.getElementById('current-event-desc').innerText;
-      createEvent(this.state.sessionLength, name, desc);
+      let calendarId = document.getElementById('calendar-select').value;
+      createEvent(this.state.sessionLength, name, desc, calendarId);
       this.setState({
         timerLabel: BREAK,
         timeLeft: this.state.breakLength * 60

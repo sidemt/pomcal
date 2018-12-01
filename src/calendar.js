@@ -10,6 +10,7 @@ var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var createButton = document.getElementById('create_button');
 var signedInOnly = document.getElementById('signed-in-only');
+var noLogs = document.getElementById('no-logs');
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -81,19 +82,8 @@ function handleCreateClick(event) {
   let duration = parseInt(document.getElementById('session-length').innerText, 10);
   let name = document.getElementById('current-event-name').innerText;
   let desc = document.getElementById('current-event-desc').innerText;
-  createEvent(duration, name, desc);
-}
-
-/**
- * Append a pre element to the body containing the given message
- * as its text node. Used to display the results of the API call.
- *
- * @param {string} message Text to be placed in pre element.
- */
-function appendPre(message) {
-  var pre = document.getElementById('content');
-  var textContent = document.createTextNode(message + '\n');
-  pre.appendChild(textContent);
+  let calendarId = document.getElementById('calendar-select').value;
+  createEvent(duration, name, desc, calendarId);
 }
 
 /**
@@ -103,6 +93,12 @@ function appendPre(message) {
  * @param {string} message Text to be placed in li element.
  */
 function appendOl(message) {
+  // Hide "No logs" message
+  if (noLogs.style.display != 'none') {
+    noLogs.style.display = 'none';
+  }
+
+  // Append new item to the ordered list
   var ol = document.getElementById('event-list');
   var newItem = "<li>" + message + "</li>";
   ol.insertAdjacentHTML("beforeEnd", newItem);
@@ -113,41 +109,18 @@ function appendOl(message) {
  *
  * @param {string} value Calendar ID
  * @param {string} summary Calendar name
+ * @param {boolean} primary If the calendar is primary
  */
 function appendOption(value, summary, primary) {
   var select = document.getElementById('calendar-select');
   if (primary) {
+    // Show the primary calendar as pre-selected
     var newItem = "<option value=\"" + value + "\" selected>" + summary + "</option>";
   } else {
     var newItem = "<option value=\"" + value + "\">" + summary + "</option>";
   }
   select.insertAdjacentHTML("beforeEnd", newItem);
 }
-
-/**
- * Retrieve the list of available calendars
- */
-function listAvailableCalendars() {
-  gapi.client.calendar.calendarList.list({
-    'minAccessRole': 'writer'
-  }).then(function(response) {
-    var calendars = response.result.items;
-    appendPre('Available Calendars:');
-
-    if (calendars.length > 0) {
-      for (i = 0; i < calendars.length; i++) {
-        var calendar = calendars[i];
-        var calendarId = calendar.id;
-        var calendarSummary = calendar.summary;
-        var isPrimary = calendar.primary;
-        appendPre(calendarId + ': ' + calendarSummary +' '+ isPrimary);
-      } 
-    } else {
-      appendPre('No calendar available.');
-    }
-  });
-}
-
 
 /**
  * Print the summary and start datetime/date of the next ten events in
@@ -212,7 +185,7 @@ function rfc3339(d) {
 /**
  * Add and event to the calendar when create button is clicked
  */
-function createEvent(duration, eventName = "Pomodoro", eventDetail = "") {
+function createEvent(duration, eventName = "Pomodoro", eventDetail = "", calendarId = "primary") {
   if (gapi.auth2.getAuthInstance().isSignedIn.get()){
     var startTime = new Date();
     var endTime = new Date();
@@ -233,7 +206,7 @@ function createEvent(duration, eventName = "Pomodoro", eventDetail = "") {
     };
   
     var request = gapi.client.calendar.events.insert({
-      'calendarId': 'primary',
+      'calendarId': calendarId,
       'resource': event
     });
   
@@ -260,20 +233,13 @@ function getCalendarList() {
     });
   
     request.execute(function(calendarList) {
-      console.log(calendarList);
 
-      var idList = [];
       calendarList.items.forEach(function(item) {
-        idList.push({
-          'id': item.id,
-          'summary': item.summary,
-          'primary': item.primary
-        });
         appendOption(item.id, item.summary, item.primary);
       });
-      console.log(idList);
     });  
   } else {
-    console.log("Not signed in");
+    console.log("Could not get calendar list");
+    appendOption('primary', 'Primary', true);
   }
 }

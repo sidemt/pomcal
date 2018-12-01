@@ -208,7 +208,8 @@ var PomodoroClock = function (_React$Component) {
         // Insert an event to the calendar
         var name = document.getElementById('current-event-name').innerText;
         var desc = document.getElementById('current-event-desc').innerText;
-        createEvent(this.state.sessionLength, name, desc);
+        var calendarId = document.getElementById('calendar-select').value;
+        createEvent(this.state.sessionLength, name, desc, calendarId);
         this.setState({
           timerLabel: BREAK,
           timeLeft: this.state.breakLength * 60
