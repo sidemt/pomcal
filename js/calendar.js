@@ -10,6 +10,7 @@ var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var createButton = document.getElementById('create_button');
 var signedInOnly = document.getElementById('signed-in-only');
+var noLogs = document.getElementById('no-logs');
 
 /**
  *  On load, called to load the auth2 library and API client library.
@@ -37,6 +38,9 @@ function initClient() {
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
     createButton.onclick = handleCreateClick;
+  }).then(function () {
+    // Get calendar list
+    getCalendarList();
   });
 }
 
@@ -78,49 +82,44 @@ function handleCreateClick(event) {
   var duration = parseInt(document.getElementById('session-length').innerText, 10);
   var name = document.getElementById('current-event-name').innerText;
   var desc = document.getElementById('current-event-desc').innerText;
-  createEvent(duration, name, desc);
+  var calendarId = document.getElementById('calendar-select').value;
+  createEvent(duration, name, desc, calendarId);
 }
 
 /**
- * Append a pre element to the body containing the given message
- * as its text node. Used to display the results of the API call.
+ * Append a li element into the ol element
+ * Used to display the results of the API call.
  *
- * @param {string} message Text to be placed in pre element.
+ * @param {string} message Text to be placed in li element.
  */
-function appendPre(message) {
-  var pre = document.getElementById('content');
-  var textContent = document.createTextNode(message + '\n');
-  pre.appendChild(textContent);
-}
-
 function appendOl(message) {
+  // Hide "No logs" message
+  if (noLogs.style.display != 'none') {
+    noLogs.style.display = 'none';
+  }
+
+  // Append new item to the ordered list
   var ol = document.getElementById('event-list');
   var newItem = "<li>" + message + "</li>";
   ol.insertAdjacentHTML("beforeEnd", newItem);
 }
 
 /**
- * Retrieve the list of available calendars
+ * Append an option element into the select element
+ *
+ * @param {string} value Calendar ID
+ * @param {string} summary Calendar name
+ * @param {boolean} primary If the calendar is primary
  */
-function listAvailableCalendars() {
-  gapi.client.calendar.calendarList.list({
-    'minAccessRole': 'writer'
-  }).then(function (response) {
-    var calendars = response.result.items;
-    appendPre('Available Calendars:');
-
-    if (calendars.length > 0) {
-      for (i = 0; i < calendars.length; i++) {
-        var calendar = calendars[i];
-        var calendarId = calendar.id;
-        var calendarSummary = calendar.summary;
-        var isPrimary = calendar.primary;
-        appendPre(calendarId + ': ' + calendarSummary + ' ' + isPrimary);
-      }
-    } else {
-      appendPre('No calendar available.');
-    }
-  });
+function appendOption(value, summary, primary) {
+  var select = document.getElementById('calendar-select');
+  if (primary) {
+    // Show the primary calendar as pre-selected
+    var newItem = "<option value=\"" + value + "\" selected>" + summary + "</option>";
+  } else {
+    var newItem = "<option value=\"" + value + "\">" + summary + "</option>";
+  }
+  select.insertAdjacentHTML("beforeEnd", newItem);
 }
 
 /**
@@ -183,6 +182,7 @@ function rfc3339(d) {
 function createEvent(duration) {
   var eventName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Pomodoro";
   var eventDetail = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  var calendarId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "primary";
 
   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
     var startTime = new Date();
@@ -204,7 +204,7 @@ function createEvent(duration) {
     };
 
     var request = gapi.client.calendar.events.insert({
-      'calendarId': 'primary',
+      'calendarId': calendarId,
       'resource': event
     });
 
@@ -217,5 +217,27 @@ function createEvent(duration) {
     console.log("Not signed in");
     var newText = 'Pomodoro Done: Not Signed In';
     appendOl(newText);
+  }
+}
+
+/**
+ * Get the list of calendars
+ */
+function getCalendarList() {
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+
+    var request = gapi.client.calendar.calendarList.list({
+      'minAccessRole': 'writer'
+    });
+
+    request.execute(function (calendarList) {
+
+      calendarList.items.forEach(function (item) {
+        appendOption(item.id, item.summary, item.primary);
+      });
+    });
+  } else {
+    console.log("Could not get calendar list");
+    appendOption('primary', 'Primary', true);
   }
 }

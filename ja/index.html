@@ -11,14 +11,6 @@
 
   gtag('config', 'UA-128908221-2');
 </script>
-<!-- Google AdSense -->
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-2996984061220679",
-          enable_page_level_ads: true
-     });
-</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,9 +34,13 @@
     <p>Googleカレンダー連携ポモドーロタイマー</p>
     <div id="pomodoro-clock"></div>
 
-    <ol id="event-list" class="number-list"></ol>
+    <div class="group logs">
+      <p><strong>Logs</strong></p>
+      <p id="no-logs">ログがありません</p>
+      <ol id="event-list" class="number-list"></ol>
+    </div>
 
-    <div class="descriptions">
+    <div class="group descriptions">
       <div class="section">
         <p id="authorize_desc" style="display: none;">
           Googleカレンダーにログを記録するにはサインインしてください。
@@ -56,18 +52,27 @@
   
       <div class="section">
         <p>
-          セッション終了時に自動的にカレンダーにログを追加できます。<br>
-          現時点ではログはメイン（デフォルト）のカレンダーに追加されます。
+          セッション終了時に自動的にカレンダーにログが追加されます。
         </p>
       </div>
   
-      <div id="signed-in-only" class="section" style="display: none;">
-        <p>カレンダー上のログは下記のタスク名と説明(Description)で登録されます。</p>
-        <div id="event-form"></div>
-        <p>
-          こちらのボタンでログを手動で追加できます。
-        </p>
-        <button id="create_button" class="btn btn-light">Add a Log</button>
+      <div id="signed-in-only" style="display: none;">
+        <div class="section">
+          <p><strong>カレンダーを選択してください。</strong></p>
+          <select id="calendar-select" class="custom-select"></select>
+        </div>
+
+        <div class="section">
+          <p><strong>作業内容を入力してください。</strong></p>
+          <div id="event-form" class="user-input-area"></div>
+        </div>
+
+        <div class="section">
+          <p>
+            こちらのボタンでログを手動で追加できます。
+          </p>
+          <button id="create_button" class="btn btn-light">Add a Log Now</button>
+        </div>
       </div>
   
     </div>

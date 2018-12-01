@@ -11,14 +11,6 @@
 
   gtag('config', 'UA-128908221-2');
 </script>
-<!-- Google AdSense -->
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-2996984061220679",
-          enable_page_level_ads: true
-     });
-</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,9 +35,13 @@
     <div id="pomodoro-clock"></div>
     <div id="sound-switch"></div>
 
-    <ol id="event-list" class="number-list"></ol>
+    <div class="group logs">
+      <p><strong>Logs</strong></p>
+      <p id="no-logs">No Pomodoro done yet</p>
+      <ol id="event-list" class="number-list"></ol>
+    </div>
 
-    <div class="descriptions">
+    <div class="group descriptions">
       <div class="section">
         <p id="authorize_desc" style="display: none;">
           Sign in with Google to log your work on Google Calendar
@@ -57,20 +53,29 @@
   
       <div class="section">
         <p>
-          When a session is completed, a log will be added automatically to your calendar.<br>
-          Currently, the log can be added to your primary (default) calendar only.
+          When a session is completed, a log will be added automatically to your calendar.
         </p>
       </div>
   
-      <div id="signed-in-only" class="section" style="display: none;">
-        <p>The event on the calendar will be created with the task name and description below.</p>
-        <div id="event-form"></div>
-        <p>
-          You can manually add a log by clicking the button below.
-        </p>
-        <button id="create_button" class="btn btn-light">Add a Log</button>
+      <div id="signed-in-only" style="display: none;">
+        <div class="section">
+          <p><strong>Select a calendar.</strong></p>
+          <select id="calendar-select" class="custom-select"></select>
+        </div>
+
+        <div class="section">
+          <p><strong>What are you working on?</strong></p>
+          <div id="event-form" class="user-input-area"></div>
+        </div>
+
+        <div class="section">
+          <p>
+            You can manually add a log by clicking the button below.
+          </p>
+          <button id="create_button" class="btn btn-light">Add a Log Now</button>
+        </div>
       </div>
-  
+
     </div>
 
     <div class="section">
