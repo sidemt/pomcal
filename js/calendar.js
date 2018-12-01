@@ -38,9 +38,6 @@ function initClient() {
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
     createButton.onclick = handleCreateClick;
-  }).then(function () {
-    // Get calendar list
-    getCalendarList();
   });
 }
 
@@ -54,8 +51,9 @@ function updateSigninStatus(isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'inline';
     signedInOnly.style.display = 'block';
-    // listUpcomingEvents();
-    // listAvailableCalendars();
+    // Get calendar list
+    clearOption();
+    getCalendarList();
   } else {
     authorizeDesc.style.display = 'block';
     authorizeButton.style.display = 'inline';
@@ -120,6 +118,14 @@ function appendOption(value, summary, primary) {
     var newItem = "<option value=\"" + value + "\">" + summary + "</option>";
   }
   select.insertAdjacentHTML("beforeEnd", newItem);
+}
+
+/**
+ * Clear option elements in the select element
+ */
+function clearOption() {
+  var select = document.getElementById('calendar-select');
+  select.innerHTML = "";
 }
 
 /**
