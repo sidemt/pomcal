@@ -218,7 +218,7 @@ function createEvent(duration, eventName = "Pomodoro", eventDetail = "", calenda
   
     request.execute(function(event) {
       console.log(event);
-      var newText = 'Pomodoro Done: ' + '<a href=\"' + event.htmlLink + '\" target=\"_blank\">View in Calendar</a>';
+      var newText = 'Pomodoro Done: ' + event.summary + ' <a href=\"' + event.htmlLink + '\" target=\"_blank\">[View in Calendar]</a>';
       appendOl(newText);
     });  
   } else {
