@@ -13,6 +13,7 @@ var intervalId;
 // Break/Session labels
 var BREAK = 'Break';
 var SESSION = 'Session';
+var LONG_BREAK = 'Long Break';
 
 // Audio elements on the html file
 var SOUND_SESSION = document.getElementById('sound-session');
@@ -67,6 +68,9 @@ var PomodoroClock = function (_React$Component) {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
+      sessionCount: 1,
+      sessionCycle: 4,
+      longBreakLength: 15,
       isRunning: false,
       soundSetting: true
     };
@@ -75,6 +79,10 @@ var PomodoroClock = function (_React$Component) {
     _this.incrementBreak = _this.incrementBreak.bind(_this);
     _this.decrementSession = _this.decrementSession.bind(_this);
     _this.incrementSession = _this.incrementSession.bind(_this);
+    _this.decrementCycle = _this.decrementCycle.bind(_this);
+    _this.incrementCycle = _this.incrementCycle.bind(_this);
+    _this.decrementLongBreak = _this.decrementLongBreak.bind(_this);
+    _this.incrementLongBreak = _this.incrementLongBreak.bind(_this);
     _this.countDown = _this.countDown.bind(_this);
     _this.toggleTimer = _this.toggleTimer.bind(_this);
     _this.startStop = _this.startStop.bind(_this);
@@ -97,6 +105,9 @@ var PomodoroClock = function (_React$Component) {
         timeLeft: 1500,
         breakLength: 5,
         sessionLength: 25,
+        sessionCount: 1,
+        sessionCycle: 4,
+        longBreakLength: 15,
         isRunning: false
       });
       clearInterval(intervalId);
@@ -132,7 +143,7 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'incrementBreak',
     value: function incrementBreak() {
-      if (this.state.breakLength < 60) {
+      if (this.state.breakLength < 120) {
         this.setState(function (state) {
           return {
             breakLength: state.breakLength + 1
@@ -166,15 +177,77 @@ var PomodoroClock = function (_React$Component) {
   }, {
     key: 'incrementSession',
     value: function incrementSession() {
-      var currentLength = this.state.sessionLength;
-      var newLength = currentLength + 1;
-      if (this.state.sessionLength < 60) {
+      if (this.state.sessionLength < 120) {
         this.setState(function (state) {
           return {
             sessionLength: state.sessionLength + 1
           };
         });
         this.updateTimeLeft(SESSION);
+      }
+    }
+
+    /**
+    * Decrements sessionCycle count by 1
+    */
+
+  }, {
+    key: 'decrementCycle',
+    value: function decrementCycle() {
+      if (this.state.sessionCycle > 1) {
+        this.setState(function (state) {
+          return {
+            sessionCycle: state.sessionCycle - 1
+          };
+        });
+      }
+    }
+
+    /**
+     * Increments sessionCycle count by 1
+     */
+
+  }, {
+    key: 'incrementCycle',
+    value: function incrementCycle() {
+      if (this.state.sessionCycle < 99) {
+        this.setState(function (state) {
+          return {
+            sessionCycle: state.sessionCycle + 1
+          };
+        });
+      }
+    }
+
+    /**
+    * Decrements long break length by 1 min
+    */
+
+  }, {
+    key: 'decrementLongBreak',
+    value: function decrementLongBreak() {
+      if (this.state.longBreakLength > 1) {
+        this.setState(function (state) {
+          return {
+            longBreakLength: state.longBreakLength - 1
+          };
+        });
+      }
+    }
+
+    /**
+     * Increments long break length by 1 min
+     */
+
+  }, {
+    key: 'incrementLongBreak',
+    value: function incrementLongBreak() {
+      if (this.state.longBreakLength < 120) {
+        this.setState(function (state) {
+          return {
+            longBreakLength: state.longBreakLength + 1
+          };
+        });
       }
     }
 
@@ -391,6 +464,63 @@ var PomodoroClock = function (_React$Component) {
             React.createElement(
               'button',
               { id: 'break-increment', className: 'btn btn-light fixed-width', onClick: this.incrementBreak },
+              '+'
+            )
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'btn-set long-break-length' },
+          React.createElement(
+            'div',
+            { id: 'long-break-label', className: 'label' },
+            'Long Break Length'
+          ),
+          React.createElement(
+            'div',
+            { id: 'long-break-length', className: 'time' },
+            this.state.longBreakLength
+          ),
+          React.createElement(
+            'div',
+            null,
+            React.createElement(
+              'button',
+              { id: 'long-break-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementLongBreak },
+              '-'
+            ),
+            React.createElement(
+              'button',
+              { id: 'long-break-increment', className: 'btn btn-light fixed-width', onClick: this.incrementLongBreak },
+              '+'
+            )
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'btn-set cycle-count' },
+          React.createElement(
+            'div',
+            { id: 'cycle-label', className: 'label' },
+            'Long break after'
+          ),
+          React.createElement(
+            'div',
+            { id: 'cycle-count', className: 'time' },
+            this.state.sessionCycle,
+            ' sessions'
+          ),
+          React.createElement(
+            'div',
+            null,
+            React.createElement(
+              'button',
+              { id: 'cycle-decrement', className: 'btn btn-light fixed-width', onClick: this.decrementCycle },
+              '-'
+            ),
+            React.createElement(
+              'button',
+              { id: 'cycle-increment', className: 'btn btn-light fixed-width', onClick: this.incrementCycle },
               '+'
             )
           )

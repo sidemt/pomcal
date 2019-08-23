@@ -5,6 +5,7 @@ var intervalId;
 // Break/Session labels
 const BREAK = 'Break';
 const SESSION = 'Session';
+const LONG_BREAK = 'Long Break';
 
 // Audio elements on the html file
 const SOUND_SESSION = document.getElementById('sound-session');
@@ -54,6 +55,9 @@ class PomodoroClock extends React.Component {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
+      sessionCount: 1,
+      sessionCycle: 4,
+      longBreakLength: 15,
       isRunning: false,
       soundSetting: true
     };
@@ -62,6 +66,10 @@ class PomodoroClock extends React.Component {
     this.incrementBreak = this.incrementBreak.bind(this);
     this.decrementSession = this.decrementSession.bind(this);
     this.incrementSession = this.incrementSession.bind(this);
+    this.decrementCycle = this.decrementCycle.bind(this);
+    this.incrementCycle = this.incrementCycle.bind(this);
+    this.decrementLongBreak = this.decrementLongBreak.bind(this);
+    this.incrementLongBreak = this.incrementLongBreak.bind(this);
     this.countDown = this.countDown.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
     this.startStop = this.startStop.bind(this);
@@ -79,6 +87,9 @@ class PomodoroClock extends React.Component {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
+      sessionCount: 1,
+      sessionCycle: 4,
+      longBreakLength: 15,
       isRunning: false
     })
     clearInterval(intervalId);
@@ -106,7 +117,7 @@ class PomodoroClock extends React.Component {
    * Increments Break length by 1 min
    */
   incrementBreak() {
-    if (this.state.breakLength < 60) {
+    if (this.state.breakLength < 120) {
       this.setState((state) => ({
         breakLength: state.breakLength + 1
       }))
@@ -130,16 +141,58 @@ class PomodoroClock extends React.Component {
    * Increments Session length by 1 min
    */
   incrementSession() {
-    let currentLength = this.state.sessionLength;
-    let newLength = currentLength + 1;
-    if (this.state.sessionLength < 60) {
+    if (this.state.sessionLength < 120) {
       this.setState((state)=>({
         sessionLength: state.sessionLength + 1
       }))
       this.updateTimeLeft(SESSION);
     }
   }
+
+    /**
+   * Decrements sessionCycle count by 1
+   */
+  decrementCycle() {
+    if (this.state.sessionCycle > 1) {
+      this.setState((state) => ({
+        sessionCycle: state.sessionCycle - 1
+      }))
+    }
+  }
   
+  /**
+   * Increments sessionCycle count by 1
+   */
+  incrementCycle() {
+    if (this.state.sessionCycle < 99) {
+      this.setState((state)=>({
+        sessionCycle: state.sessionCycle + 1
+      }))
+    }
+  }
+  
+    /**
+   * Decrements long break length by 1 min
+   */
+  decrementLongBreak() {
+    if (this.state.longBreakLength > 1) {
+      this.setState((state) => ({
+        longBreakLength: state.longBreakLength - 1
+      }))
+    }
+  }
+  
+  /**
+   * Increments long break length by 1 min
+   */
+  incrementLongBreak() {
+    if (this.state.longBreakLength < 120) {
+      this.setState((state)=>({
+        longBreakLength: state.longBreakLength + 1
+      }))
+    }
+  }
+
   /**
    * Counts down the time
    * If the time reaches 0, toggle session/break and play the timer sound
@@ -273,6 +326,24 @@ class PomodoroClock extends React.Component {
           <div>
             <button id="break-decrement" className="btn btn-light fixed-width" onClick={this.decrementBreak}>-</button>
             <button id="break-increment" className="btn btn-light fixed-width" onClick={this.incrementBreak}>+</button>
+          </div>
+        </div>
+
+        <div className="btn-set long-break-length">
+          <div id="long-break-label" className="label">Long Break Length</div>
+          <div id="long-break-length" className="time">{this.state.longBreakLength}</div>
+          <div>
+            <button id="long-break-decrement" className="btn btn-light fixed-width" onClick={this.decrementLongBreak}>-</button>
+            <button id="long-break-increment" className="btn btn-light fixed-width" onClick={this.incrementLongBreak}>+</button>
+          </div>
+        </div>
+
+        <div className="btn-set cycle-count">
+          <div id="cycle-label" className="label">Long break after</div>
+          <div id="cycle-count" className="time">{this.state.sessionCycle} sessions</div>
+          <div>
+            <button id="cycle-decrement" className="btn btn-light fixed-width" onClick={this.decrementCycle}>-</button>
+            <button id="cycle-increment" className="btn btn-light fixed-width" onClick={this.incrementCycle}>+</button>
           </div>
         </div>
 
