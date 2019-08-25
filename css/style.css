@@ -1,6 +1,7 @@
 body {
   --main-red: #ef6461;
   --main-green: #63a375;
+  --main-blue: #6083D6;
   --main-white: #fffffa;
   --main-black: #333333;
 }
@@ -39,20 +40,32 @@ a:hover {
 }
 
 #pomodoro-clock-inside .timer {
-  grid-column: 1;
+  grid-column: 1/ span 3;
   grid-row: 1;
-  width: 15rem;
+  width: auto;
 }
 
 #pomodoro-clock-inside .session-length {
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 1;
+  grid-row: 2;
   width: 12rem;
 }
 
 #pomodoro-clock-inside .break-length {
-  grid-column: 3;
-  grid-row: 1;
+  grid-column: 2;
+  grid-row: 2;
+  width: 12rem;
+}
+
+#pomodoro-clock-inside .long-break-length {
+  grid-column: 1;
+  grid-row: 3;
+  width: 12rem;
+}
+
+#pomodoro-clock-inside .cycle-count {
+  grid-column: 2;
+  grid-row: 3;
   width: 12rem;
 }
 
@@ -140,7 +153,7 @@ a:hover {
 
 #sound-setting {
   grid-column: 1/ span 3;
-  grid-row: 2;
+  grid-row: 4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,9 +269,21 @@ footer li {
     width: auto;
   }
 
+  #pomodoro-clock-inside .long-break-length {
+    grid-column: 1;
+    grid-row: 3;
+    width: auto;
+  }
+
+  #pomodoro-clock-inside .cycle-count {
+    grid-column: 2;
+    grid-row: 3;
+    width: auto;
+  }
+
   #sound-setting {
     grid-column: 1 / span 2;
-    grid-row: 3;
+    grid-row: 4;
     display: flex;
     align-items: center;
     justify-content: center;
