@@ -10,6 +10,7 @@ const LONG_BREAK = 'Long Break';
 // Audio elements on the html file
 const SOUND_SESSION = document.getElementById('sound-session');
 const SOUND_BREAK = document.getElementById('sound-break');
+const SOUND_LONG_BREAK = document.getElementById('sound-long-break');
 
 // Which sound to be played
 var beep = SOUND_SESSION;
@@ -55,7 +56,7 @@ class PomodoroClock extends React.Component {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
-      sessionCount: 1,
+      currentCount: 1,
       sessionCycle: 4,
       longBreakLength: 15,
       isRunning: false,
@@ -87,7 +88,7 @@ class PomodoroClock extends React.Component {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
-      sessionCount: 1,
+      currentCount: 1,
       sessionCycle: 4,
       longBreakLength: 15,
       isRunning: false
@@ -179,6 +180,7 @@ class PomodoroClock extends React.Component {
       this.setState((state) => ({
         longBreakLength: state.longBreakLength - 1
       }))
+      this.updateTimeLeft(LONG_BREAK);
     }
   }
   
@@ -190,6 +192,7 @@ class PomodoroClock extends React.Component {
       this.setState((state)=>({
         longBreakLength: state.longBreakLength + 1
       }))
+      this.updateTimeLeft(LONG_BREAK);
     }
   }
 
@@ -203,6 +206,7 @@ class PomodoroClock extends React.Component {
           timeLeft: state.timeLeft - 1
         }))
       } else {
+        // When the time reaches 0
         this.toggleTimer();
       }
     }
@@ -212,22 +216,47 @@ class PomodoroClock extends React.Component {
      */
   toggleTimer() {
     if (this.state.timerLabel == SESSION) {
+      // When a session ends
       // Insert an event to the calendar
       let name = document.getElementById('current-event-name').innerText;
       let desc = document.getElementById('current-event-desc').innerText;
       let calendarId = document.getElementById('calendar-select').value;
       createEvent(this.state.sessionLength, name, desc, calendarId);
-      this.setState({
-        timerLabel: BREAK,
-        timeLeft: this.state.breakLength * 60
-      })
-      // Change the background color
-      document.getElementById('body').style.backgroundColor = "var(--main-green)";
-      // Change the sound to be played
-      beep = SOUND_BREAK;
-      // Play the sound
+      // Check which break to start
+      if (this.state.currentCount < this.state.sessionCycle) {
+        // Start a short break
+        this.setState({
+          timerLabel: BREAK,
+          timeLeft: this.state.breakLength * 60
+        })
+        // Change the background color
+        document.getElementById('body').style.backgroundColor = "var(--main-green)";
+        // Change the sound to be played
+        beep = SOUND_BREAK;
+        // Increase sessions count
+        this.setState((state)=>({
+          currentCount: state.currentCount + 1
+        }));
+      } else {
+        // Start a long break
+        this.setState({
+          timerLabel: LONG_BREAK,
+          timeLeft: this.state.longBreakLength * 60
+        })
+        // Change the background color
+        document.getElementById('body').style.backgroundColor = "var(--main-blue)";
+        // Change the sound to be played
+        beep = SOUND_LONG_BREAK;
+        // Reset sessions count
+        this.setState((state)=>({
+          currentCount: 1
+        }));
+      }
+      // Play the start sound
       playSound(this.state.soundSetting);
     } else {
+      // When a break or long break ends
+      // Start a session
       this.setState({
         timerLabel: SESSION,
         timeLeft: this.state.sessionLength * 60
@@ -278,6 +307,10 @@ class PomodoroClock extends React.Component {
       this.setState((state)=>({
         timeLeft: state.breakLength * 60
       }))
+    } else if (label == LONG_BREAK && this.state.timerLabel == LONG_BREAK) {
+      this.setState((state)=>({
+        timeLeft: state.longBreakLength * 60
+      }))
     } else {
       return;
     }
@@ -303,10 +336,11 @@ class PomodoroClock extends React.Component {
           <div>
             <div id="timer-label" className="label">{this.state.timerLabel}</div>
             <TimeLeft timeLeft={this.state.timeLeft} />
+            <div>Completed Sessions: {this.state.currentCount -1}/{this.state.sessionCycle}</div>
           </div>
 
           <div>
-            <button id="start_stop" className="btn btn-light" onClick={this.startStop}>Start/Stop</button>
+            <button id="start_stop" className="btn btn-light" onClick={this.startStop}>Start/Pause</button>
             <button id="reset" className="btn btn-light" onClick={this.reset}>Reset</button>
           </div>
         </div>

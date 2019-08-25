@@ -18,6 +18,7 @@ var LONG_BREAK = 'Long Break';
 // Audio elements on the html file
 var SOUND_SESSION = document.getElementById('sound-session');
 var SOUND_BREAK = document.getElementById('sound-break');
+var SOUND_LONG_BREAK = document.getElementById('sound-long-break');
 
 // Which sound to be played
 var beep = SOUND_SESSION;
@@ -68,7 +69,7 @@ var PomodoroClock = function (_React$Component) {
       timeLeft: 1500,
       breakLength: 5,
       sessionLength: 25,
-      sessionCount: 1,
+      currentCount: 1,
       sessionCycle: 4,
       longBreakLength: 15,
       isRunning: false,
@@ -105,7 +106,7 @@ var PomodoroClock = function (_React$Component) {
         timeLeft: 1500,
         breakLength: 5,
         sessionLength: 25,
-        sessionCount: 1,
+        currentCount: 1,
         sessionCycle: 4,
         longBreakLength: 15,
         isRunning: false
@@ -232,6 +233,7 @@ var PomodoroClock = function (_React$Component) {
             longBreakLength: state.longBreakLength - 1
           };
         });
+        this.updateTimeLeft(LONG_BREAK);
       }
     }
 
@@ -248,6 +250,7 @@ var PomodoroClock = function (_React$Component) {
             longBreakLength: state.longBreakLength + 1
           };
         });
+        this.updateTimeLeft(LONG_BREAK);
       }
     }
 
@@ -266,6 +269,7 @@ var PomodoroClock = function (_React$Component) {
           };
         });
       } else {
+        // When the time reaches 0
         this.toggleTimer();
       }
     }
@@ -278,22 +282,51 @@ var PomodoroClock = function (_React$Component) {
     key: 'toggleTimer',
     value: function toggleTimer() {
       if (this.state.timerLabel == SESSION) {
+        // When a session ends
         // Insert an event to the calendar
         var name = document.getElementById('current-event-name').innerText;
         var desc = document.getElementById('current-event-desc').innerText;
         var calendarId = document.getElementById('calendar-select').value;
         createEvent(this.state.sessionLength, name, desc, calendarId);
-        this.setState({
-          timerLabel: BREAK,
-          timeLeft: this.state.breakLength * 60
-        });
-        // Change the background color
-        document.getElementById('body').style.backgroundColor = "var(--main-green)";
-        // Change the sound to be played
-        beep = SOUND_BREAK;
-        // Play the sound
+        // Check which break to start
+        if (this.state.currentCount < this.state.sessionCycle) {
+          // Start a short break
+          this.setState({
+            timerLabel: BREAK,
+            timeLeft: this.state.breakLength * 60
+          });
+          // Change the background color
+          document.getElementById('body').style.backgroundColor = "var(--main-green)";
+          // Change the sound to be played
+          beep = SOUND_BREAK;
+          // Increase sessions count
+          this.setState(function (state) {
+            return {
+              currentCount: state.currentCount + 1
+            };
+          });
+        } else {
+          // Start a long break
+          this.setState({
+            timerLabel: LONG_BREAK,
+            timeLeft: this.state.longBreakLength * 60
+          });
+          // Change the background color
+          document.getElementById('body').style.backgroundColor = "var(--main-blue)";
+          // Change the sound to be played
+          beep = SOUND_LONG_BREAK;
+          // Reset sessions count
+          this.setState(function (state) {
+            return {
+              currentCount: 1
+            };
+          });
+        }
+        // Play the start sound
         playSound(this.state.soundSetting);
       } else {
+        // When a break or long break ends
+        // Start a session
         this.setState({
           timerLabel: SESSION,
           timeLeft: this.state.sessionLength * 60
@@ -354,6 +387,12 @@ var PomodoroClock = function (_React$Component) {
             timeLeft: state.breakLength * 60
           };
         });
+      } else if (label == LONG_BREAK && this.state.timerLabel == LONG_BREAK) {
+        this.setState(function (state) {
+          return {
+            timeLeft: state.longBreakLength * 60
+          };
+        });
       } else {
         return;
       }
@@ -395,7 +434,15 @@ var PomodoroClock = function (_React$Component) {
               { id: 'timer-label', className: 'label' },
               this.state.timerLabel
             ),
-            React.createElement(TimeLeft, { timeLeft: this.state.timeLeft })
+            React.createElement(TimeLeft, { timeLeft: this.state.timeLeft }),
+            React.createElement(
+              'div',
+              null,
+              'Completed Sessions: ',
+              this.state.currentCount - 1,
+              '/',
+              this.state.sessionCycle
+            )
           ),
           React.createElement(
             'div',
@@ -403,7 +450,7 @@ var PomodoroClock = function (_React$Component) {
             React.createElement(
               'button',
               { id: 'start_stop', className: 'btn btn-light', onClick: this.startStop },
-              'Start/Stop'
+              'Start/Pause'
             ),
             React.createElement(
               'button',
