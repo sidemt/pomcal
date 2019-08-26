@@ -26,6 +26,7 @@ a:hover {
 .container {
   margin: auto;
   padding: 2rem .5rem;
+  max-width: 42rem;
 }
 
 .lang-selection {
@@ -33,14 +34,22 @@ a:hover {
   font-size: 0.7rem;
 }
 
-#pomodoro-clock-inside {
+#pomodoro-clock {
+  display: flex;
   align-items: center;
-  display: grid;
   justify-content: center;
 }
 
+#pomodoro-clock-inside {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  justify-content: space-between;
+  width: 100%;
+}
+
 #pomodoro-clock-inside .timer {
-  grid-column: 1/ span 3;
+  grid-column: 1 / span 2;
   grid-row: 1;
   width: auto;
 }
@@ -48,25 +57,25 @@ a:hover {
 #pomodoro-clock-inside .session-length {
   grid-column: 1;
   grid-row: 2;
-  width: 12rem;
+  width: auto;
 }
 
 #pomodoro-clock-inside .break-length {
   grid-column: 2;
   grid-row: 2;
-  width: 12rem;
+  width: auto;
 }
 
 #pomodoro-clock-inside .long-break-length {
-  grid-column: 1;
-  grid-row: 3;
-  width: 12rem;
+  grid-column: 3;
+  grid-row: 2;
+  width: auto;
 }
 
 #pomodoro-clock-inside .cycle-count {
-  grid-column: 2;
-  grid-row: 3;
-  width: 12rem;
+  grid-column: 3;
+  grid-row: 1;
+  width: auto;
 }
 
 #pomodoro-clock-inside .btn {
@@ -83,6 +92,7 @@ a:hover {
   margin: 0.5rem;
   border: 1px solid var(--main-white);
   border-radius: 5px;
+  height: 90%;
 }
 
 #pomodoro-clock-inside .label {
@@ -102,8 +112,8 @@ a:hover {
   background-color: rgba(255, 255, 250, 0.2);
   border: 1px solid var(--main-white);
   border-radius: 5px;
-  max-width: 41rem;
-  margin: 1rem auto;
+  width: auto;
+  margin: 1rem 0.5rem;
 }
 
 .logs {
@@ -251,6 +261,10 @@ footer li {
 }
 
 @media (max-width: 767.98px) {
+  #pomodoro-clock-inside {
+    grid-template-columns: 50% 50%;
+  }
+
   #pomodoro-clock-inside .timer {
     grid-column: 1 / span 2;
     grid-row: 1;
