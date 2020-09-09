@@ -20,9 +20,10 @@
     "url": "https://github.com/sidemt/pomcal/issues"
   },
   "homepage": "https://github.com/sidemt/pomcal#readme",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-react-app": "^3.1.2",
-    "terser": "^4.2.0"
+    "babel-preset-react-app": "^9.1.2",
+    "terser": "^5.3.0"
   }
 }
